@@ -44,6 +44,13 @@
              {{ f.errors }}          
           {% endfor %}     
           <br />
+          <datalist id="airports">
+            {% for air_port in air_ports %}
+            <option value="{{air_port.name}}">         
+          {% endfor %}     
+        </datalist>
+          
+          
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
       </div>
@@ -58,6 +65,7 @@
     <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
       <h6 class="m-0 font-weight-bold text-primary">Air Ticket Details</h6>
     </a>
+    <span>&nbsp; <a href="{% url 'm_air_port_add' %}">Airports</a></span>
     <!-- Card Content - Collapse -->
     <div class="collapse show" id="collapseCardExample">
       <div class="card-body"> 
@@ -65,6 +73,7 @@
           <thead>
             <tr>
               <th scope="col">Sl.</th>
+              <th scope="col">ID</th>
               <th scope="col">Airline</th>
               <th scope="col">Price</th>
               <th scope="col">Departure to</th>
@@ -75,9 +84,10 @@
             {% for air_ticket in air_tickets %}
             <tr>
               <th scope="row">{{ forloop.counter }}</th>
+              <td>PA{{ air_ticket.id }}</td>
               <td>{{ air_ticket.airline }}</td>
               <td>{{ air_ticket.client_price }}</td>	  
-              <td>{{ air_ticket.departure_to }}</td>	  	  
+              <td>{{ air_ticket.departure }}</td>	  	  
               <td><a href="{% url 'm_air_ticket_details' air_ticket.id %}"><i class="fas fa-eye"></i></a></td>
             </tr>
             {% endfor %}

@@ -42,7 +42,7 @@
             <a href="{% url 'm_package_tour_add' tour.id %}" class="a-extra">     
               <div class="card mb-4 py-0 border-bottom-warning">
                 <div class="card-body">
-                  <h5>{{tour.title}} <small>({{tour.get_type_display}})</small></h5>
+                  <h5>PT{{tour.id}} | {{tour.title}} <small>({{tour.get_type_display}})</small></h5>
                   <h6>{{tour.duration_days}} days | {{tour.duration_nights}} nights | {{tour.members}} members | {{tour.client_price}} tk</h6>
                 </div>
               </div>
@@ -69,6 +69,7 @@
           <thead>
             <tr>
               <th scope="col">Sl.</th>
+              <th scope="col">ID</th>
               <th scope="col">Title</th>
               <th scope="col">Type</th>
               <th scope="col">Total Member</th>
@@ -80,6 +81,7 @@
             {% for tour in package_tours %}
             <tr>
               <th scope="row">{{ forloop.counter }}</th>
+              <td>CPT{{ tour.id }}</td>
               <td>{{ tour.title }}</td>
               <td>{{ tour.get_type_display }}</td>	  
               <td>{{ tour.members }}</td>	  

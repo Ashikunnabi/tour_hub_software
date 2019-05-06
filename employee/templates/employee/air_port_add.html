@@ -1,0 +1,91 @@
+{% extends 'employee/_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="content mt-3">
+  {% if success_message %}
+    <div class="col-sm-12">
+        <div class="alert  alert-success alert-dismissible fade show" role="alert">
+            <span class="badge badge-pill badge-success">Successfully</span> {{success_message}}.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>	
+  {% endif %}          
+  {% if error_message %}
+    <div class="col-sm-12">
+        <div class="alert  alert-danger alert-dismissible fade show" role="alert">
+            <span class="badge badge-pill badge-danger">Failed</span> {{error_message}}.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>	
+  {% endif %}            
+</div>        
+
+<div class="col-lg-12">
+  <!-- Collapsable Card Example -->
+  <div class="card shadow mb-4">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+      <h6 class="m-0 font-weight-bold text-primary">New Air Port Add</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse no-show" id="collapseCardExample">
+      <div class="card-body">                    
+        <form action="{% url 'e_air_port_add' %}" method="POST">
+          {% csrf_token %}     
+          {% for f in form %}
+             {{ f.label }}          
+             {{ f }}          
+             {{ f.errors }}          
+          {% endfor %}     
+          <br />
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>     
+        
+<div class="col-lg-12">
+  <!-- Collapsable Card Example -->
+  <div class="card shadow mb-4">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+      <h6 class="m-0 font-weight-bold text-primary">Air Port Details</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="collapseCardExample">
+      <div class="card-body"> 
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Sl.</th>
+              <th scope="col">Name</th>
+              <th scope="col">Country</th>
+              <th scope="col">See More</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for air_port in air_ports %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ air_port.name }}</td>
+              <td>{{ air_port.country }}</td>	    	  
+              <td><a href="{% url 'e_air_port_details' air_port.id %}"><i class="fas fa-eye"></i></a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+        
+{% endblock %}

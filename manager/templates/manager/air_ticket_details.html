@@ -29,6 +29,7 @@
   
 <div class="col-lg-12">
   <div class="card-body">
+    ID: PA{{ air_ticket.id }}
     <form action="{% url 'm_air_ticket_details' air_ticket.id %}" method="POST">
       {% csrf_token %}     
       {% for f in form %}
@@ -36,7 +37,12 @@
          {{ f }}          
          {{ f.errors }}          
       {% endfor %}     
-      <br />
+      <br />      
+        <datalist id="airports">
+          {% for air_port in air_ports %}
+          <option value="{{air_port.name}}">         
+        {% endfor %}     
+      </datalist>
       <button type="submit" class="btn btn-primary" style="float:right">Save change</button>        
     </form>
     
@@ -57,7 +63,7 @@
               </div>
               <div class="modal-body">
                 <h4>You want to delete:</h4>
-                <h6 style="color:blue">{{air_ticket.airline}}</h6>
+                <h6 style="color:blue">{{air_ticket.airline}} -> {{air_ticket.departure}} to {{air_ticket.arrival}}</h6>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>

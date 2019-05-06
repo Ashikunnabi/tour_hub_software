@@ -30,6 +30,7 @@
 <div class="col-lg-12">
   <div class="card-body">
     <form action="{% url 'm_package_visa_details' visa.id %}" method="POST">
+      Code: CPV{{visa.id}} <br/><br/>
       {% csrf_token %}     
       {% for f in form %}
          {{ f.label }}          

@@ -14,22 +14,38 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from .views import ( index, client_marketing, payment,
-                     client_add, client_details, client_delete,  
+from .views import ( employee_add, employee_details, employee_delete, 
+                     index, client_marketing, payment, request_custom_package,
+                     client_add, client_details, client_delete,  cart_details,
                      enquiry_client_add, enquiry_client_details, enquiry_client_delete,  
+                     air_port_add, air_port_details, air_port_delete,  
                      air_ticket_add, air_ticket_details, air_ticket_delete,  
                      islamic_add, islamic_details, islamic_delete,  
-                     tour_add,  tour_details,  tour_delete,  
-                     visa_add, visa_details, visa_delete,
+                     tour_add,  tour_details,  tour_delete,  cart_delete,
+                     visa_add, visa_details, visa_delete, order, payment_details,
                      package_tour, package_tour_add, package_tour_details, package_tour_delete,
                      package_islamic, package_islamic_add, package_islamic_details, package_islamic_delete,
                      package_air_ticket, package_air_ticket_add, package_air_ticket_details, package_air_ticket_delete,
                      package_visa, package_visa_add, package_visa_details, package_visa_delete,
+                     expenditure_add, expenditure_details, expenditure_delete, invoice,specific_invoice,
                     )
 urlpatterns = [
     path('', index, name='m_index'),
     path('marketing', client_marketing, name='m_client_marketing'),
     path('payment', payment, name='m_payment'),
+    path('payment/details/<int:id>', payment_details, name='m_payment_details'),
+    
+    path('requests', request_custom_package, name='m_request_custom_package'),
+    path('cart/details', cart_details, name='m_cart_details'),
+    path('cart/delete/<int:id>', cart_delete, name='m_cart_delete'),
+    
+    path('order', order, name='m_order'),   
+    path('invoice', invoice, name='m_invoice'),   
+    path('specific-invoice/<int:id>', specific_invoice, name='m_specific_invoice'),  
+    
+    path('employee/add', employee_add, name='m_employee_add'),
+    path('employee/details/<int:id>', employee_details, name='m_employee_details'),
+    path('employee/delete/<int:id>', employee_delete, name='m_employee_delete'),
     
     path('client/add', client_add, name='m_client_add'),
     path('client/details/<int:id>', client_details, name='m_client_details'),
@@ -38,6 +54,10 @@ urlpatterns = [
     path('enquiry_client/add', enquiry_client_add, name='m_enquiry_client_add'),
     path('enquiry_client/details/<int:id>', enquiry_client_details, name='m_enquiry_client_details'),
     path('enquiry_client/delete/<int:id>', enquiry_client_delete, name='m_enquiry_client_delete'),
+    
+    path('air-port/add', air_port_add, name='m_air_port_add'),
+    path('air-port/details/<int:id>', air_port_details, name='m_air_port_details'),
+    path('air-port/delete/<int:id>', air_port_delete, name='m_air_port_delete'),
     
     path('air-ticket/add', air_ticket_add, name='m_air_ticket_add'),
     path('air-ticket/details/<int:id>', air_ticket_details, name='m_air_ticket_details'),
@@ -74,5 +94,9 @@ urlpatterns = [
     path('package-visa/add/<int:id>', package_visa_add, name='m_package_visa_add'),
     path('package-visa/details/<int:id>', package_visa_details, name='m_package_visa_details'),
     path('package-visa/delete/<int:id>', package_visa_delete, name='m_package_visa_delete'),
+    
+    path('expenditure/add', expenditure_add, name='m_expenditure_add'),
+    path('expenditure/details/<int:id>', expenditure_details, name='m_expenditure_details'),
+    path('expenditure/delete/<int:id>', expenditure_delete, name='m_expenditure_delete'),
 ]
 

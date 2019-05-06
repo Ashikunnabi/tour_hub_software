@@ -42,7 +42,7 @@
             <a href="{% url 'm_package_visa_add' visa.id %}" class="a-extra">     
               <div class="card mb-4 py-0 border-bottom-warning">
                 <div class="card-body">
-                  <h5>{{visa.country_name}}</h5>
+                  <h5>PV{{visa.id}} | {{visa.country_name}}</h5>
                   <h6>{{visa.client_price}} tk | {{visa.processing_time}}</h6>
                 </div>
               </div>
@@ -69,6 +69,7 @@
           <thead>
             <tr>
               <th scope="col">Sl.</th>
+              <th scope="col">ID</th>
               <th scope="col">Client Name</th>
               <th scope="col">Country Name</th>
               <th scope="col">Processing Time</th>
@@ -80,6 +81,7 @@
             {% for visa in package_visas %}
             <tr>
               <th scope="row">{{ forloop.counter }}</th>
+              <td>CPV{{ visa.id }}</td>
               <td>{{ visa.client.name }}</td>
               <td>{{ visa.country_name }}</td>	  
               <td>{{ visa.processing_time }}</td>	  

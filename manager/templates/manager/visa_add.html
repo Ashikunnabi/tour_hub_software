@@ -65,6 +65,7 @@
           <thead>
             <tr>
               <th scope="col">Sl.</th>
+              <th scope="col">ID</th>
               <th scope="col">Country Name</th>
               <th scope="col">Price</th>
               <th scope="col">Processing Time</th>
@@ -75,6 +76,7 @@
             {% for visa in visas %}
             <tr>
               <th scope="row">{{ forloop.counter }}</th>
+              <td>PV{{ visa.id }}</td>
               <td>{{ visa.country_name }}</td>
               <td>{{ visa.client_price }}</td>	  
               <td>{{ visa.processing_time }}</td>	 

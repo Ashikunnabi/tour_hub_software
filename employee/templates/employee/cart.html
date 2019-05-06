@@ -1,0 +1,114 @@
+{% extends 'employee/_base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% if message %} 
+<br /><br />
+<div class="alert alert-primary" role="alert">
+  
+  {{message}}
+</div>    
+{% else %}         
+<div class="alert alert-primary" role="alert">
+  Client Information
+</div>
+<div class="col-md-4">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <th scope="col">Client Name:</th>
+      <td scope="col">{{client_info.name}}</td>
+    </tr>
+    <tr>
+      <th scope="col">Profession:</th>
+      <td scope="col">{{client_info.profession}}</td>
+    </tr>
+    <tr>
+      <th scope="col">Address:</th>
+      <td scope="col">{{client_info.address}}</td>
+    </tr>
+    <tr>
+      <th scope="col">Phone:</th>
+      <td scope="col">{{client_info.phone}}</td>
+    </tr>
+    <tr>
+      <th scope="col">Email:</th>
+      <td scope="col">{{client_info.email}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<br/><br/>
+          
+<div class="alert alert-primary" role="alert">
+  Cart Information
+</div>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Description</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for cart in carts %}
+          {% if cart.package_tour %}
+              <tr>
+                <td>Tour</td>
+                <td>1</td>
+                <td>{{cart.package_tour.client_price}}</td>
+                <td><a href="{% url 'e_cart_delete' cart.id %}">X</a></td>
+              </tr>
+          {% endif %}
+          {% if cart.package_islamic %}
+              <tr>
+                <td>{{cart.package_islamic.get_type_display}}</td>
+                <td>1</td>
+                <td>{{cart.package_islamic.client_price}}</td>
+                <td><a href="{% url 'e_cart_delete' cart.id %}">X</a></td>
+              </tr>
+          {% endif %}
+          {% if cart.package_visa %}
+              <tr>
+                <td>Visa Processing</td>
+                <td>1</td>
+                <td>{{cart.package_visa.client_price}}</td>
+                <td><a href="{% url 'e_cart_delete' cart.id %}">X</a></td>
+              </tr>
+          {% endif %}
+          {% if cart.package_air_ticket %}
+              <tr>
+                <td>Air Ticket</td>
+                <td>{{cart.package_air_ticket.quantity}}</td>
+                <td>{{cart.package_air_ticket.client_price}}</td>
+                <td><a href="{% url 'e_cart_delete' cart.id %}">X</a></td>
+              </tr>
+          {% endif %}
+        {% endfor %}
+  </tbody>
+</table>
+<hr />
+<br/><br/>
+<form action="{% url 'e_order' %}" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}     
+  {% for f in form %}
+     {{ f.label }}          
+     {{ f }}          
+     {{ f.errors }}          
+  {% endfor %}     
+  <br />
+  <button type="submit" class="btn btn-primary">Order</button>
+</form>
+        
+        
+{% endif %}
+{% endblock %}

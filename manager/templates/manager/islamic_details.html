@@ -29,6 +29,7 @@
   
 <div class="col-lg-12">
   <div class="card-body">
+    ID: PI{{ islamic.id }}
     <form action="{% url 'm_islamic_details' islamic.id %}" method="POST">
       {% csrf_token %}     
       {% for f in form %}

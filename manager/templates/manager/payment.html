@@ -34,282 +34,78 @@
     <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
       <h6 class="m-0 font-weight-bold text-primary">All Payment Details</h6>
     </a>
+    <span>&nbsp; <a href="{% url 'm_invoice' %}" target="_blank">Print last order's invoice</a></span>
     <!-- Card Content - Collapse -->
     <div class="collapse show" id="collapseCardExample">    
       <div class="card-body">       
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" id="home100-tab" data-toggle="tab" href="#home100" role="tab" aria-controls="home100" aria-selected="true">All Payments</a>
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All Payments</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="profile100-tab" data-toggle="tab" href="#profile100" role="tab" aria-controls="profile100" aria-selected="false">Due Payments</a>
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Due Payments</a>
           </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="home100" role="tabpanel" aria-labelledby="home100-tab">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-              <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Tour Packages 
-                <sup><span class="badge badge-success badge-counter" style="font-size:10px;">{{package_tours.count}}</span></sup></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Islamic Packages 
-                <sup><span class="badge badge-success badge-counter" style="font-size:10px;">{{package_islamics.count}}</span></sup></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="home1-tab" data-toggle="tab" href="#home1" role="tab" aria-controls="home1" aria-selected="false">Air Tickets 
-                <sup><span class="badge badge-success badge-counter" style="font-size:10px;">{{package_air_tickets.count}}</span></sup></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="profile1-tab" data-toggle="tab" href="#profile1" role="tab" aria-controls="profile1" aria-selected="false">Visa Processing 
-                <sup><span class="badge badge-success badge-counter" style="font-size:10px;">{{package_visas.count}}</span></sup></a>
-              </li>
-            </ul>
-            <div class="tab-content" id="myTabContent">
-              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">              
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th scope="col">Sl.</th>
+                      <th scope="col">Invoice No</th>
                       <th scope="col">Client Name</th>
-                      <th scope="col">Type</th>
-                      <th scope="col">Total Price</th>
-                      <th scope="col">Paid Price</th>
+                      <th scope="col">Payment Method</th>
+                      <th scope="col">Payable Ammount</th>
+                      <th scope="col">Paid Ammount</th>
                       <th scope="col">See More</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {% for package_tour in package_tours %}
+                    {% for order in orders %}
                     <tr>
-                      <th scope="row">{{ forloop.counter }}</th>
-                      <td>{{ package_tour.client.name }}</td>
-                      <td>{{ package_tour.get_type_display }}</td>	  
-                      <td>{{ package_tour.client_price }}</td> 
-                      <td>{{ package_tour.paid_price }}</td>	 	  
-                      <td><a href="{% url 'm_package_tour_details' package_tour.id %}"><i class="fas fa-eye"></i></a></td>
+                      <td>{{ order.id }}</td>
+                      <td>{{ order.client.name }}</td>
+                      <td>{{ order.get_payment_method_display }}</td>	  
+                      <td>{{ order.payable_ammount }}</td> 
+                      <td>{{ order.received_ammount }}</td>	 	  
+                      <td><a href="{% url 'm_payment_details' order.id %}"><i class="fas fa-eye"></i></a></td>
                     </tr>
                     {% endfor %}
                   </tbody>
                 </table>
-              </div>
-              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+              </div>           
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th scope="col">Sl.</th>
+                      <th scope="col">Invoice No</th>
                       <th scope="col">Client Name</th>
-                      <th scope="col">Type</th>
-                      <th scope="col">Total Price</th>
-                      <th scope="col">Paid Price</th>
+                      <th scope="col">Payment Method</th>
+                      <th scope="col">Payable Ammount</th>
+                      <th scope="col">Due Ammount</th>
                       <th scope="col">See More</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {% for package_islamic in package_islamics %}
-                    <tr>
-                      <th scope="row">{{ forloop.counter }}</th>
-                      <td>{{ package_islamic.client.name }}</td>
-                      <td>{{ package_islamic.get_type_display }}</td>	
-                      <td>{{ package_islamic.client_price }}</td>  
-                      <td>{{ package_islamic.paid_price }}</td>	  	  
-                      <td><a href="{% url 'm_package_islamic_details' package_islamic.id %}"><i class="fas fa-eye"></i></a></td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-              <div class="tab-pane fade" id="home1" role="tabpanel" aria-labelledby="home1-tab">
-                <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">Sl.</th>
-                  <th scope="col">Client Name</th>
-                  <th scope="col">Airline</th>
-                  <th scope="col">Total Price</th>
-                  <th scope="col">Paid Price</th>
-                  <th scope="col">See More</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for air_ticket in package_air_tickets %}
-                <tr>
-                  <th scope="row">{{ forloop.counter }}</th>
-                  <td>{{ air_ticket.client.name }}</td>
-                  <td>{{ air_ticket.airline }}</td>	    
-                  <td>{{ air_ticket.client_price }}</td>	  
-                  <td>{{ air_ticket.paid_price }}</td>	  
-                  <td><a href="{% url 'm_package_air_ticket_details' air_ticket.id %}"><i class="fas fa-eye"></i></a></td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-              </div>
-              <div class="tab-pane fade" id="profile1" role="tabpanel" aria-labelledby="profile1-tab">
-                <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">Sl.</th>
-                  <th scope="col">Client Name</th>
-                  <th scope="col">Country Name</th>
-                  <th scope="col">Total Price</th>
-                  <th scope="col">Paid Price</th>
-                  <th scope="col">See More</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for visa in package_visas %}
-                <tr>
-                  <th scope="row">{{ forloop.counter }}</th>
-                  <td>{{ visa.client.name }}</td>
-                  <td>{{ visa.country_name }}</td>	 	  
-                  <td>{{ visa.client_price }}</td>	  
-                  <td>{{ visa.paid_price }}</td>	  
-                  <td><a href="{% url 'm_package_visa_details' visa.id %}"><i class="fas fa-eye"></i></a></td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-              </div>
-            </div>
-          </div>                
-          <div class="tab-pane fade" id="profile100" role="tabpanel" aria-labelledby="profile100-tab">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-              <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home2" role="tab" aria-controls="home2" aria-selected="true">Tour Packages </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile2" role="tab" aria-controls="profile2" aria-selected="false">Islamic Packages</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="home1-tab" data-toggle="tab" href="#home22" role="tab" aria-controls="home22" aria-selected="false">Air Tickets </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="profile1-tab" data-toggle="tab" href="#profile22" role="tab" aria-controls="profile22" aria-selected="false">Visa Processing</a>
-              </li>
-            </ul>
-            <div class="tab-content" id="myTabContent">
-              <div class="tab-pane fade show active" id="home2" role="tabpanel" aria-labelledby="home2-tab">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th scope="col">Sl.</th>
-                      <th scope="col">Client Name</th>
-                      <th scope="col">Type</th>
-                      <th scope="col">Total Price</th>
-                      <th scope="col">Paid Price</th>
-                      <th scope="col">See More</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for package_tour in package_tours %}
-                    {% if package_tour.due_price == 0 %}
+                    {% for order in orders %}
+                    {% if order.due_ammount == 0 %}
                     {% else %}
                     <tr>
-                      <th scope="row">{{ forloop.counter }}</th>
-                      <td>{{ package_tour.client.name }}</td>
-                      <td>{{ package_tour.get_type_display }}</td>
-                      <td>{{ package_tour.client_price }}</td>	  
-                      <td>{{ package_tour.paid_price }}</td>	  
-                      <td><a href="{% url 'm_package_tour_details' package_tour.id %}"><i class="fas fa-eye"></i></a></td>
+                      <td>{{ order.id }}</td>
+                      <td>{{ order.client.name }}</td>
+                      <td>{{ order.get_payment_method_display }}</td>	  
+                      <td>{{ order.payable_ammount }}</td> 
+                      <td>{{ order.due_ammount }}</td>	 	  
+                      <td><a href="{% url 'm_payment_details' order.id %}"><i class="fas fa-eye"></i></a></td>
                     </tr>
                     {% endif %}
                     {% endfor %}
                   </tbody>
                 </table>
               </div>
-              <div class="tab-pane fade" id="profile2" role="tabpanel" aria-labelledby="profile2-tab">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th scope="col">Sl.</th>
-                      <th scope="col">Client</th>
-                      <th scope="col">Type</th>
-                      <th scope="col">Total Price</th>
-                      <th scope="col">Paid Price</th>
-                      <th scope="col">See More</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for package_islamic in package_islamics %}
-                    {% if package_islamic.due_price == 0 %}
-                    {% else %}                
-                    <tr>
-                      <th scope="row">{{ forloop.counter }}</th>
-                      <td>{{ package_islamic.client.name }}</td>
-                      <td>{{ package_islamic.get_type_display }}</td>
-                      <td>{{ package_islamic.client_price }}</td>	  
-                      <td>{{ package_islamic.paid_price }}</td>	  
-                      <td><a href="{% url 'm_package_islamic_details' package_islamic.id %}"><i class="fas fa-eye"></i></a></td>
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-              <div class="tab-pane fade" id="home22" role="tabpanel" aria-labelledby="home22-tab">
-                <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">Sl.</th>
-                  <th scope="col">Client Name</th>
-                  <th scope="col">Airline</th>
-                  <th scope="col">Total Price</th>
-                  <th scope="col">Paid Price</th>
-                  <th scope="col">See More</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for air_ticket in package_air_tickets %}
-                {% if air_ticket.due_price == 0 %}
-                {% else %}                
-                <tr>
-                  <th scope="row">{{ forloop.counter }}</th>
-                  <td>{{ air_ticket.client.name }}</td>
-                  <td>{{ air_ticket.airline }}</td>	  	  
-                  <td>{{ air_ticket.client_price }}</td>	  
-                  <td>{{ air_ticket.paid_price }}</td>	  
-                  <td><a href="{% url 'm_package_air_ticket_details' air_ticket.id %}"><i class="fas fa-eye"></i></a></td>
-                </tr>
-                {% endif %}
-                {% endfor %}
-              </tbody>
-            </table>
-              </div>
-              <div class="tab-pane fade" id="profile22" role="tabpanel" aria-labelledby="profile22-tab">
-                <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">Sl.</th>
-                  <th scope="col">Client Name</th>
-                  <th scope="col">Country Name</th>
-                  <th scope="col">Total Price</th>
-                  <th scope="col">Paid Price</th>
-                  <th scope="col">See More</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for visa in package_visas %}
-                {% if visa.due_price == 0 %}
-                {% else %}                
-                <tr>
-                  <th scope="row">{{ forloop.counter }}</th>
-                  <td>{{ visa.client.name }}</td>
-                  <td>{{ visa.country_name }}</td>	  	  
-                  <td>{{ visa.client_price }}</td>	  
-                  <td>{{ visa.paid_price }}</td>	  
-                  <td><a href="{% url 'm_package_visa_details' visa.id %}"><i class="fas fa-eye"></i></a></td>
-                </tr>
-                {% endif %}
-                {% endfor %}
-              </tbody>
-            </table>
-              </div>
-            </div>
-          </div>
-        </div>        
-      </div>
     </div>
   </div>
+</div>
+</div>
 </div>
 
 

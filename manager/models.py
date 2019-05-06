@@ -1,30 +1,48 @@
 from django.db import models
 
 
+class Employee(models.Model):
+    TYPE = (
+        ('admin', 'Admin'),
+        ('employee', 'Employee'),
+    )
+    STATUS = (
+        ('1', 'Married'),
+        ('2', 'Unmarried'),
+    )
+    type                 = models.CharField(max_length=10, choices=TYPE, default='employee') 
+    employee_id          = models.CharField(max_length=50)
+    password             = models.CharField(max_length=100)
+    name                 = models.CharField(max_length=50)
+    phone_number         = models.CharField(max_length=15)
+    email                = models.EmailField()
+    present_address      = models.CharField(max_length=200)
+    permanent_address    = models.CharField(max_length=200)
+    nid                  = models.IntegerField()
+    dob                  = models.DateField(auto_now=False, auto_now_add=False)
+    designation          = models.CharField(max_length=50)
+    photo                = models.FileField(blank=True, null=True)
+    marital_status       = models.CharField(max_length=1, choices=STATUS, default='2')    
+    
+    def __str__(self):
+        return self.employee_id
+        
+
 class Client(models.Model):
-    BLOOD_GROUP = (
-        ('1', 'A+'), ('2', 'B+'), ('3', 'O+'), ('4', 'AB+'),
-        ('5', 'A-'), ('6', 'B-'), ('7', 'O-'), ('8', 'AB-'),
-    ) 
+    created_by           = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at           = models.DateField(auto_now_add=True)
     name                 = models.CharField(max_length=50)
     phone                = models.IntegerField()
     email                = models.EmailField()
-    nid                  = models.IntegerField()
     profession           = models.CharField(max_length=50)
-    blood_group          = models.CharField(max_length=1, choices=BLOOD_GROUP, default=1)
-    present_address      = models.CharField(max_length=200)
-    permanent_address    = models.CharField(max_length=200)
-    photo                = models.FileField()
+    address              = models.CharField(max_length=200)
+    photo                = models.FileField(blank=True, null=True)
     
     def __str__(self):
-        return self.name
+        return ("{} - 0{}").format(self.name,self.phone)
 
 
 class EnquiryClient(models.Model):
-    BLOOD_GROUP = (
-        ('1', 'A+'), ('2', 'B+'), ('3', 'O+'), ('4', 'AB+'),
-        ('5', 'A-'), ('6', 'B-'), ('7', 'O-'), ('8', 'AB-'),
-    ) 
     TOUR_TYPE = (
         ('1', 'Normal Tour'),
         ('2', 'Oficial Tour'),
@@ -34,21 +52,29 @@ class EnquiryClient(models.Model):
         ('6', 'Air Ticket'),
         ('7', 'Visa Processing'),
     )
+    HOTEL_QUALITY = (
+        ('1', '5*'),
+        ('2', '3*'),
+        ('3', '2*'),
+    )
+    created_by        = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at        = models.DateField(auto_now_add=True)
     name              = models.CharField(max_length=50)
     phone             = models.IntegerField()
     email             = models.EmailField()
-    nid               = models.IntegerField()
     profession        = models.CharField(max_length=50)
-    blood_group       = models.CharField(max_length=1, choices=BLOOD_GROUP, default=1)
-    present_address   = models.CharField(max_length=200)
-    permanent_address = models.CharField(max_length=200)
-    photo             = models.FileField()
+    address           = models.CharField(max_length=200)
     type              = models.CharField(max_length=1, choices=TOUR_TYPE, blank=True, null=True)
     country_name      = models.CharField(max_length=30, blank=True, null=True)
     places            = models.CharField(max_length=200, blank=True, null=True)
     members           = models.IntegerField(blank=True, null=True)
+    child             = models.IntegerField(blank=True, null=True)
+    infant            = models.IntegerField(blank=True, null=True)
+    hotel_quality     = models.CharField(max_length=1, choices=HOTEL_QUALITY, blank=True, null=True)
+    number_of_rooms   = models.IntegerField(blank=True, null=True)
     airline           = models.CharField(max_length=100, blank=True, null=True)
     duration          = models.CharField(max_length=30, blank=True, null=True)
+    special_requirment= models.CharField(max_length=200)
     client_price      = models.IntegerField(blank=True, null=True)  
     
     
@@ -56,11 +82,25 @@ class EnquiryClient(models.Model):
         return self.name
 
 
+class AirPort(models.Model):
+    created_by     = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at     = models.DateField(auto_now_add=True)
+    name           = models.CharField(max_length=200)
+    country        = models.CharField(max_length=100) 
+    
+    
+    def __str__(self):
+        return self.name
+
+
 class AirTicket(models.Model):
+    created_by     = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at     = models.DateField(auto_now_add=True)
     airline        = models.CharField(max_length=100)
-    departure_from = models.CharField(max_length=100)
-    departure_to   = models.CharField(max_length=100)
-    actual_price   = models.IntegerField()
+    departure      = models.CharField(max_length=100)
+    arrival        = models.CharField(max_length=100)
+    quantity       = models.IntegerField(default=1)
+    actual_price   = models.IntegerField(default=0, blank=True)
     client_price   = models.IntegerField()
 
 
@@ -69,13 +109,15 @@ class Islamic(models.Model):
         ('1', 'Hazz'),
         ('2', 'Umrah'),
     )
-    title    = models.CharField(max_length=30)
-    type     = models.CharField(max_length=1, choices=TOUR_TYPE, default=1)
-    places   = models.CharField(max_length=200)
+    created_by      = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at      = models.DateField(auto_now_add=True)
+    title           = models.CharField(max_length=30)
+    type            = models.CharField(max_length=1, choices=TOUR_TYPE, default=1)
+    places          = models.CharField(max_length=200)
     duration_days   = models.CharField(max_length=3)
     duration_nights = models.CharField(max_length=3)
     members         = models.IntegerField()
-    actual_price    = models.IntegerField()
+    actual_price    = models.IntegerField(default=0, blank=True)
     client_price    = models.IntegerField()
 
 
@@ -85,20 +127,24 @@ class Tour(models.Model):
         ('2', 'Oficial Tour'),
         ('3', 'Honeymoon'),
     )
-    title    = models.CharField(max_length=30)
-    type     = models.CharField(max_length=1, choices=TOUR_TYPE, default=1)
-    places   = models.CharField(max_length=200)
+    created_by      = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at      = models.DateField(auto_now_add=True)
+    title           = models.CharField(max_length=30)
+    type            = models.CharField(max_length=1, choices=TOUR_TYPE, default=1)
+    places          = models.CharField(max_length=200)
     duration_days   = models.CharField(max_length=3)
     duration_nights = models.CharField(max_length=3)
     members         = models.IntegerField()
-    actual_price    = models.IntegerField()
+    actual_price    = models.IntegerField(default=0, blank=True)
     client_price    = models.IntegerField()
 
 
 class Visa(models.Model):
+    created_by      = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at      = models.DateField(auto_now_add=True)
     country_name    = models.CharField(max_length=30)
     processing_time = models.CharField(max_length=30)
-    actual_price    = models.IntegerField()
+    actual_price    = models.IntegerField(default=0, blank=True)
     client_price    = models.IntegerField()
 
 
@@ -108,16 +154,29 @@ class PackageTour(models.Model):
         ('2', 'Oficial Tour'),
         ('3', 'Honeymoon'),
     )
-    client   = models.ForeignKey(Client, on_delete=models.CASCADE)
-    title    = models.CharField(max_length=30)
-    type     = models.CharField(max_length=1, choices=TOUR_TYPE, default=1)
-    places   = models.CharField(max_length=200)
+    HOTEL_QUALITY = (
+        ('1', '5*'),
+        ('2', '3*'),
+        ('3', '2*'),
+    )
+    created_by      = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at      = models.DateField(auto_now_add=True)
+    client          = models.ForeignKey(Client, on_delete=models.CASCADE)
+    title           = models.CharField(max_length=30)
+    type            = models.CharField(max_length=1, choices=TOUR_TYPE, default=1)
+    places          = models.CharField(max_length=200)
     duration_days   = models.CharField(max_length=3)
     duration_nights = models.CharField(max_length=3)
     members         = models.IntegerField()
+    child             = models.IntegerField(blank=True, null=True)
+    infant            = models.IntegerField(blank=True, null=True)
+    hotel_quality     = models.CharField(max_length=1, choices=HOTEL_QUALITY, blank=True, null=True)
+    number_of_rooms   = models.IntegerField(blank=True, null=True)
+    airline           = models.CharField(max_length=100, blank=True, null=True)
+    special_requirment= models.CharField(max_length=200)
+    actual_price    = models.IntegerField(default=0, blank=True)
     client_price    = models.IntegerField()
-    paid_price      = models.IntegerField()
-    due_price       = models.IntegerField()
+    in_cart         = models.BooleanField(default=False)
 
 
 class PackageIslamic(models.Model):
@@ -125,32 +184,124 @@ class PackageIslamic(models.Model):
         ('1', 'Hajj'),
         ('2', 'Umrah'),
     )
-    client   = models.ForeignKey(Client, on_delete=models.CASCADE)
-    title    = models.CharField(max_length=30)
-    type     = models.CharField(max_length=1, choices=TOUR_TYPE, default=1)
-    places   = models.CharField(max_length=200)
+    HOTEL_QUALITY = (
+        ('1', '5*'),
+        ('2', '3*'),
+        ('3', '2*'),
+    )
+    created_by      = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at      = models.DateField(auto_now_add=True)
+    client          = models.ForeignKey(Client, on_delete=models.CASCADE)
+    title           = models.CharField(max_length=30)
+    type            = models.CharField(max_length=1, choices=TOUR_TYPE, default=1)
+    places          = models.CharField(max_length=200)
     duration_days   = models.CharField(max_length=3)
     duration_nights = models.CharField(max_length=3)
     members         = models.IntegerField()
+    child             = models.IntegerField(blank=True, null=True)
+    infant            = models.IntegerField(blank=True, null=True)
+    hotel_quality     = models.CharField(max_length=1, choices=HOTEL_QUALITY, blank=True, null=True)
+    number_of_rooms   = models.IntegerField(blank=True, null=True)
+    airline           = models.CharField(max_length=100, blank=True, null=True)
+    special_requirment= models.CharField(max_length=200)
+    actual_price    = models.IntegerField(default=0, blank=True)
     client_price    = models.IntegerField()
-    paid_price      = models.IntegerField()
-    due_price       = models.IntegerField()
+    in_cart         = models.BooleanField(default=False)
     
 
 class PackageAirTicket(models.Model):
+    created_by     = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at     = models.DateField(auto_now_add=True)
     client         = models.ForeignKey(Client, on_delete=models.CASCADE)
     airline        = models.CharField(max_length=100)
-    departure_from = models.CharField(max_length=100)
-    departure_to   = models.CharField(max_length=100)
+    departure      = models.CharField(max_length=100)
+    arrival        = models.CharField(max_length=100)
+    quantity       = models.IntegerField(default=1)
+    actual_price   = models.IntegerField(default=0, blank=True)
     client_price   = models.IntegerField()
-    paid_price      = models.IntegerField()
-    due_price       = models.IntegerField()
+    in_cart         = models.BooleanField(default=False)
     
 
 class PackageVisa(models.Model):
+    created_by      = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at      = models.DateField(auto_now_add=True)
     client          = models.ForeignKey(Client, on_delete=models.CASCADE)
     country_name    = models.CharField(max_length=30)
     processing_time = models.CharField(max_length=30)
+    actual_price    = models.IntegerField(default=0, blank=True)
     client_price    = models.IntegerField()
-    paid_price      = models.IntegerField()
-    due_price       = models.IntegerField()
+    in_cart         = models.BooleanField(default=False)
+    
+
+class Cart(models.Model):
+    created_by      = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at      = models.DateField(auto_now_add=True)
+    package_tour    = models.ForeignKey(PackageTour, on_delete=models.CASCADE, blank=True, null=True)
+    package_islamic = models.ForeignKey(PackageIslamic, on_delete=models.CASCADE, blank=True, null=True)
+    package_air_ticket = models.ForeignKey(PackageAirTicket, on_delete=models.CASCADE, blank=True, null=True)
+    package_visa    = models.ForeignKey(PackageVisa, on_delete=models.CASCADE, blank=True, null=True)
+    
+
+class Order(models.Model):
+    PAYMENT_METHOD = (
+        ('1', 'Cash'),
+        ('2', 'Cheque'),
+        ('3', 'DD'),
+        ('4', 'TT'),
+    )
+    created_by         = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at         = models.DateField(auto_now_add=True)
+    client             = models.ForeignKey(Client, on_delete=models.CASCADE)
+    package_tour       = models.ForeignKey(PackageTour, on_delete=models.CASCADE, blank=True, null=True)
+    package_islamic    = models.ForeignKey(PackageIslamic, on_delete=models.CASCADE, blank=True, null=True)
+    package_air_ticket = models.ForeignKey(PackageAirTicket, on_delete=models.CASCADE, blank=True, null=True)
+    package_visa       = models.ForeignKey(PackageVisa, on_delete=models.CASCADE, blank=True, null=True)
+    payment_method     = models.CharField(max_length=1, choices=PAYMENT_METHOD, default='1')
+    cheque_number      = models.CharField(max_length=30, blank=True)
+    bank               = models.CharField(max_length=50, blank=True)
+    branch             = models.CharField(max_length=50, blank=True)
+    cheque_date        = models.CharField(max_length=30, blank=True)
+    booking_id         = models.CharField(max_length=30, blank=True)
+    actual_price       = models.IntegerField()
+    total_ammount      = models.IntegerField()
+    discount           = models.IntegerField()
+    tax_rate           = models.CharField(max_length=4)
+    total_tax          = models.IntegerField(default=0)
+    shipping_handling  = models.IntegerField(default=0)
+    payable_ammount    = models.IntegerField()
+    received_ammount   = models.IntegerField()
+    due_ammount        = models.IntegerField()    
+    
+    ship_to              = models.CharField(max_length=50, blank=True)
+    ship_to_company_name = models.CharField(max_length=50, blank=True)
+    ship_to_address      = models.CharField(max_length=30, blank=True)
+    ship_to_phone        = models.CharField(max_length=30, blank=True)
+    advertisement        = models.FileField(blank=True, null=True)
+
+    
+class Expenditure(models.Model):
+    PAYMENT_METHOD = (
+        ('1', 'Cash'),
+        ('2', 'Cheque'),
+    )
+    created_at      = models.DateField(auto_now_add=True)
+    recieved_by     = models.CharField(max_length=100)
+    date            = models.CharField(max_length=20)
+    by              = models.CharField(max_length=1, choices=PAYMENT_METHOD, default='1')
+    being_the       = models.CharField(max_length=200)
+    description_01  = models.CharField(max_length=100, blank=True)
+    cost_01         = models.IntegerField(default=0)
+    description_02  = models.CharField(max_length=100, blank=True)
+    cost_02         = models.IntegerField(default=0)
+    description_03  = models.CharField(max_length=100, blank=True)
+    cost_03         = models.IntegerField(default=0)
+    description_04  = models.CharField(max_length=100, blank=True)
+    cost_04         = models.IntegerField(default=0)
+    description_05  = models.CharField(max_length=100, blank=True)
+    cost_05         = models.IntegerField(default=0)
+    total           = models.IntegerField()
+    
+    
+    
+    
+    

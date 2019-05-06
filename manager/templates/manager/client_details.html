@@ -37,13 +37,16 @@
     <!-- Card Content - Collapse -->
     <div class="collapse no-show" id="collapseCardExample">
       <div class="card-body">
+        ID: C{{client.id}}<br>
         <form action="{% url 'm_client_details' client.id %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}     
       {% for f in form %}
          {{ f.label }}          
          {{ f }}          
          {{ f.errors }}          
-      {% endfor %}     
+      {% endfor %}  
+      <a href="/media/{{client.photo}}" target=_blank>Current Documents</a>
+      <br />
       <br />
       <button type="submit" class="btn btn-primary" style="float:right">Save change</button>
     </form>
@@ -114,6 +117,7 @@
               <thead>
                 <tr>
                   <th scope="col">Sl.</th>
+                  <th scope="col">ID</th>
                   <th scope="col">Title</th>
                   <th scope="col">Type</th>
                   <th scope="col">Total Member</th>
@@ -125,6 +129,7 @@
                 {% for package_tour in package_tours %}
                 <tr>
                   <th scope="row">{{ forloop.counter }}</th>
+                  <td>CPT{{ package_tour.id }}</td>
                   <td>{{ package_tour.title }}</td>
                   <td>{{ package_tour.get_type_display }}</td>	  
                   <td>{{ package_tour.members }}</td>	  
@@ -140,6 +145,7 @@
               <thead>
                 <tr>
                   <th scope="col">Sl.</th>
+                  <th scope="col">ID</th>
                   <th scope="col">Title</th>
                   <th scope="col">Type</th>
                   <th scope="col">Total Member</th>
@@ -151,6 +157,7 @@
                 {% for package_islamic in package_islamics %}
                 <tr>
                   <th scope="row">{{ forloop.counter }}</th>
+                  <td>CPI{{ package_islamic.id }}</td>
                   <td>{{ package_islamic.title }}</td>
                   <td>{{ package_islamic.get_type_display }}</td>	  
                   <td>{{ package_islamic.members }}</td>	  
@@ -166,6 +173,7 @@
           <thead>
             <tr>
               <th scope="col">Sl.</th>
+              <th scope="col">ID</th>
               <th scope="col">Client Name</th>
               <th scope="col">Airline</th>
               <th scope="col">Departure to</th>
@@ -177,6 +185,7 @@
             {% for air_ticket in package_air_tickets %}
             <tr>
               <th scope="row">{{ forloop.counter }}</th>
+              <td>CPA{{ air_ticket.id }}</td>
               <td>{{ air_ticket.client.name }}</td>
               <td>{{ air_ticket.airline }}</td>	  
               <td>{{ air_ticket.departure_to }}</td>	  
@@ -192,6 +201,7 @@
           <thead>
             <tr>
               <th scope="col">Sl.</th>
+              <th scope="col">ID</th>
               <th scope="col">Client Name</th>
               <th scope="col">Country Name</th>
               <th scope="col">Processing Time</th>
@@ -203,6 +213,7 @@
             {% for visa in package_visas %}
             <tr>
               <th scope="row">{{ forloop.counter }}</th>
+              <td>CPV{{ visa.id }}</td>
               <td>{{ visa.client.name }}</td>
               <td>{{ visa.country_name }}</td>	  
               <td>{{ visa.processing_time }}</td>	  

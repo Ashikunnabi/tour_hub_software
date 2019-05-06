@@ -42,7 +42,7 @@
             <a href="{% url 'm_package_islamic_add' islamic.id %}" class="a-extra">     
               <div class="card mb-4 py-0 border-bottom-warning">
                 <div class="card-body">
-                  <h5>{{islamic.title}} <small>({{islamic.get_type_display}})</small></h5>
+                  <h5>PI{{islamic.id}} | {{islamic.title}} <small>({{islamic.get_type_display}})</small></h5>
                   <h6>{{islamic.duration_days}} days | {{islamic.duration_nights}} nights | {{islamic.members}} members | {{islamic.client_price}} tk</h6>
                 </div>
               </div>
@@ -69,6 +69,7 @@
           <thead>
             <tr>
               <th scope="col">Sl.</th>
+              <th scope="col">ID</th>
               <th scope="col">Title</th>
               <th scope="col">Type</th>
               <th scope="col">Total Member</th>
@@ -80,6 +81,7 @@
             {% for islamic in package_islamics %}
             <tr>
               <th scope="row">{{ forloop.counter }}</th>
+              <td>CPI{{ islamic.id }}</td>
               <td>{{ islamic.title }}</td>
               <td>{{ islamic.get_type_display }}</td>	  
               <td>{{ islamic.members }}</td>	  

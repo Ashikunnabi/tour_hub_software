@@ -28,6 +28,7 @@
                                         <!-- Widgets 01 --> 
   
 <div class="col-lg-12">
+  ID: E{{enquiry_client.id}}<br>
   <div class="card-body">
     <form action="{% url 'm_enquiry_client_details' enquiry_client.id %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}     
