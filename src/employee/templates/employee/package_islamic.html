@@ -1,0 +1,101 @@
+{% extends 'employee/_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="content mt-3">
+  {% if success_message %}
+    <div class="col-sm-12">
+        <div class="alert  alert-success alert-dismissible fade show" role="alert">
+            <span class="badge badge-pill badge-success">Successfully</span> {{success_message}}.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>	
+  {% endif %}          
+  {% if error_message %}
+    <div class="col-sm-12">
+        <div class="alert  alert-danger alert-dismissible fade show" role="alert">
+            <span class="badge badge-pill badge-danger">Failed</span> {{error_message}}.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>	
+  {% endif %}            
+</div>        
+
+<div class="col-lg-12">
+  <!-- Collapsable Card Example -->
+  <div class="card shadow mb-4">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+      <h6 class="m-0 font-weight-bold text-primary">Islamic Packages</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="collapseCardExample">
+      <div class="card-body">
+        <div class="row">
+        {% for islamic in islamics %}
+          <div class="col-lg-6">
+            <a href="{% url 'e_package_islamic_add' islamic.id %}" class="a-extra">     
+              <div class="card mb-4 py-0 border-bottom-warning">
+                <div class="card-body">
+                  <h5>PI{{islamic.id}} | {{islamic.title}} <small>({{islamic.get_type_display}})</small></h5>
+                  <h6>{{islamic.duration_days}} days | {{islamic.duration_nights}} nights | {{islamic.members}} members | {{islamic.client_price}} tk</h6>
+                </div>
+              </div>
+            </a>       
+          </div>        
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>     
+        
+<div class="col-lg-12">
+  <!-- Collapsable Card Example -->
+  <div class="card shadow mb-4">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+      <h6 class="m-0 font-weight-bold text-primary">Islamic Package Details</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse no-show" id="collapseCardExample">
+      <div class="card-body"> 
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Sl.</th>
+              <th scope="col">ID</th>
+              <th scope="col">Title</th>
+              <th scope="col">Type</th>
+              <th scope="col">Total Member</th>
+              <th scope="col">Price</th>
+              <th scope="col">See More</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for islamic in package_islamics %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>CPI{{ islamic.id }}</td>
+              <td>{{ islamic.title }}</td>
+              <td>{{ islamic.get_type_display }}</td>	  
+              <td>{{ islamic.members }}</td>	  
+              <td>{{ islamic.client_price }}</td>	  
+              <td><a href="{% url 'e_package_islamic_details' islamic.id %}"><i class="fas fa-eye"></i></a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+        
+{% endblock %}
