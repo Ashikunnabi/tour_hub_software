@@ -36,7 +36,8 @@
     <!-- Card Content - Collapse -->
     <div class="collapse show" id="collapseCardExample">
       <div class="card-body">
-        <div class="row">
+        <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()"><br><br>
+        <div class="row" id="list">
         {% for islamic in islamics %}
           <div class="col-lg-6">
             <a href="{% url 'e_package_islamic_add' islamic.id %}" class="a-extra">     
@@ -95,6 +96,26 @@
     </div>
   </div>
 </div>
+
+
+<script>
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("list");
+  a = div.getElementsByTagName("div");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>
 
 
         
