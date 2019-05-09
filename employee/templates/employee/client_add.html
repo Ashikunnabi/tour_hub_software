@@ -128,10 +128,10 @@
               <thead>
                 <tr>
                   <th scope="col">Sl.</th>
+                  <th scope="col">Client ID</th>
                   <th scope="col">Client Name</th>
                   <th scope="col">Phone Number</th>
                   <th scope="col">Profession</th>
-                  <th scope="col">Blood Group</th>
                   <th scope="col">See More</th>
                 </tr>
               </thead>
@@ -139,10 +139,10 @@
                 {% for client in enquiry_clients %}
                 <tr>
                   <th scope="row">{{ forloop.counter }}</th>
+                  <td>E{{ client.id }}</td>
                   <td>{{ client.name }}</td>
                   <td>0{{ client.phone }}</td>	  
-                  <td>{{ client.profession }}</td>	  
-                  <td>{{ client.get_blood_group_display }}</td>	  
+                  <td>{{ client.profession }}</td>	    
                   <td><a href="{% url 'e_enquiry_client_details' client.id %}"><i class="fas fa-eye"></i></a></td>
                 </tr>
                 {% endfor %}

@@ -11,7 +11,7 @@ class EmployeeForm(ModelForm):
                 'type'              : forms.Select(attrs={'class':'custom-select'}),
                 'employee_id'       : forms.TextInput(attrs={'class':'form-control'}),
                 'name'              : forms.TextInput(attrs={'class':'form-control'}),
-                'password'          : forms.PasswordInput(attrs={'class':'form-control'}),
+                'password'          : forms.TextInput(attrs={'class':'form-control'}),
                 'phone_number'      : forms.TextInput(attrs={'class':'form-control'}),
                 'email'             : forms.EmailInput(attrs={'class':'form-control'}),
                 'present_address'   : forms.TextInput(attrs={'class':'form-control'}),
@@ -33,7 +33,7 @@ class ClientForm(ModelForm):
                 'phone'             : forms.TextInput(attrs={'class':'form-control', 'onchange':'autoFill()'}),
                 'email'             : forms.EmailInput(attrs={'class':'form-control', 'onchange':'autoFill()'}),
                 'profession'        : forms.TextInput(attrs={'class':'form-control', 'onchange':'autoFill()'}),
-                'address'   : forms.TextInput(attrs={'class':'form-control', 'onchange':'autoFill()'}),
+                'address'           : forms.TextInput(attrs={'class':'form-control', 'onchange':'autoFill()'}),
                 'photo'             : forms.FileInput(attrs={'class':'form-control'}),
             }
 

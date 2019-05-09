@@ -1177,12 +1177,20 @@ def payment_details(request, id):
 @has_access(allowed_roles=['employee'])    
 def request_custom_package(request): 
     """ all packages along with payment info and seperate due list """       
-    package_tours       = PackageTour.objects.all()[::-1]
-    package_islamics    = PackageIslamic.objects.all()[::-1]
-    package_air_tickets = PackageAirTicket.objects.all()[::-1]
-    package_visas       = PackageVisa.objects.all()[::-1]
+    tours               = Tour.objects.filter(created_by__employee_id=request.user.username)[::-1]
+    islamics            = Islamic.objects.filter(created_by__employee_id=request.user.username)[::-1]
+    air_tickets         = AirTicket.objects.filter(created_by__employee_id=request.user.username)[::-1]
+    visas               = Visa.objects.filter(created_by__employee_id=request.user.username)[::-1]
+    package_tours       = PackageTour.objects.filter(created_by__employee_id=request.user.username)[::-1]
+    package_islamics    = PackageIslamic.objects.filter(created_by__employee_id=request.user.username)[::-1]
+    package_air_tickets = PackageAirTicket.objects.filter(created_by__employee_id=request.user.username)[::-1]
+    package_visas       = PackageVisa.objects.filter(created_by__employee_id=request.user.username)[::-1]
     
     context = {
+        'tours'               : tours,
+        'islamics'            : islamics,
+        'air_tickets'         : air_tickets,
+        'visas'               : visas,
         'package_tours'       : package_tours,
         'package_islamics'    : package_islamics,
         'package_air_tickets' : package_air_tickets,

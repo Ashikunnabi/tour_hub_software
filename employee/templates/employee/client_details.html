@@ -175,7 +175,7 @@
                   <th scope="col">ID</th>
               <th scope="col">Client Name</th>
               <th scope="col">Airline</th>
-              <th scope="col">Departure to</th>
+              <th scope="col">Arrival</th>
               <th scope="col">Price</th>
               <th scope="col">See More</th>
             </tr>
@@ -187,7 +187,7 @@
               <td>CPA{{ air_ticket.id }}</td>
               <td>{{ air_ticket.client.name }}</td>
               <td>{{ air_ticket.airline }}</td>	  
-              <td>{{ air_ticket.departure_to }}</td>	  
+              <td>{{ air_ticket.arrival }}</td>	  
               <td>{{ air_ticket.client_price }}</td>	  
               <td><a href="{% url 'e_package_air_ticket_details' air_ticket.id %}"><i class="fas fa-eye"></i></a></td>
             </tr>

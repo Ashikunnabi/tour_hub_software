@@ -61,6 +61,7 @@
     <!-- Card Content - Collapse -->
     <div class="collapse show" id="collapseCardExample">
       <div class="card-body"> 
+        <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()"><br><br>
         <table class="table table-hover">
           <thead>
             <tr>
@@ -73,7 +74,7 @@
               <th scope="col">See More</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="list">
             {% for tour in tours %}
             <tr>
               <th scope="row">{{ forloop.counter }}</th>
@@ -92,6 +93,26 @@
   </div>
 </div>
 
+
+
+<script>
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("list");
+  a = div.getElementsByTagName("tr");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>
 
         
 {% endblock %}

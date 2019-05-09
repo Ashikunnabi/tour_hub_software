@@ -197,12 +197,6 @@
    <!-- </div> -->
 </div>
 
-
-
-
-
-
-
 <!-- Content Row -->
 
 <div class="row">
@@ -219,7 +213,7 @@
           <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
             <div class="dropdown-header">Yearly Earning Overview:</div>
             <form action="{% url 'm_index' %}" method="GET">
-              <input class="dropdown-item" type="number" name="year" min="1900" max="3099" step="1" value="2019" />
+              <input class="dropdown-item" type="number" name="year" min="1900" max="3099" step="1" value="{% now 'Y' %}" />
             
               <div class="dropdown-divider"></div>
                 <input class="dropdown-item" type="submit" value="Search" />
@@ -231,12 +225,12 @@
       <div class="card-body">
         <div class="chart-area">
           <canvas id="myAreaChart"></canvas>          
-<script>
-var earn_val = new Array("{{earning_overview.0}}","{{earning_overview.1}}","{{earning_overview.2}}",
-                  "{{earning_overview.3}}","{{earning_overview.4}}","{{earning_overview.5}}",
-                  "{{earning_overview.6}}","{{earning_overview.7}}","{{earning_overview.8}}",
-                  "{{earning_overview.9}}","{{earning_overview.10}}","{{earning_overview.11}}",);
-</script>
+            <script>
+            var earn_val = new Array("{{earning_overview.0}}","{{earning_overview.1}}","{{earning_overview.2}}",
+                              "{{earning_overview.3}}","{{earning_overview.4}}","{{earning_overview.5}}",
+                              "{{earning_overview.6}}","{{earning_overview.7}}","{{earning_overview.8}}",
+                              "{{earning_overview.9}}","{{earning_overview.10}}","{{earning_overview.11}}",);
+            </script>
         </div>
       </div>
     </div>
@@ -250,7 +244,7 @@ var earn_val = new Array("{{earning_overview.0}}","{{earning_overview.1}}","{{ea
     <div class="card shadow mb-4">
       <!-- Card Header - Dropdown -->
       <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Cost Overview</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Costs Overview</h6>
         <div class="dropdown no-arrow">
           <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -258,7 +252,7 @@ var earn_val = new Array("{{earning_overview.0}}","{{earning_overview.1}}","{{ea
           <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
             <div class="dropdown-header">Yearly Cost Overview:</div>
             <form action="{% url 'm_index' %}" method="GET">
-              <input class="dropdown-item" type="number" name="year" min="1900" max="3099" step="1" value="2019" />
+              <input class="dropdown-item" type="number" name="year" min="1900" max="3099" step="1" value="{% now 'Y' %}" />
             
               <div class="dropdown-divider"></div>
                 <input class="dropdown-item" type="submit" value="Search" />

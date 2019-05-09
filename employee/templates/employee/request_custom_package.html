@@ -64,9 +64,9 @@
                     <tr>
                       <th scope="col">Sl.</th>
                       <th scope="col">ID</th>
-                      <th scope="col">Client Name</th>
+                      <th scope="col">Client Name / Title</th>
                       <th scope="col">Type</th>
-                      <th scope="col">Total Price</th>
+                      <th scope="col">Total Price / Members</th>
                       <th scope="col">See More</th>
                     </tr>
                   </thead>
@@ -75,14 +75,27 @@
                     {% if package_tour.client_price == 0 %}
                       <tr style="color:red;">
                         <th scope="row">{{ forloop.counter }}</th>
-                        <td>CPT{{ package_tour.id }}</td>
+                        <td>CPT{{ package_tour.id}}</td>
                         <td>{{ package_tour.client.name }}</td>
                         <td>{{ package_tour.get_type_display }}</td>	  
                         <td>{{ package_tour.client_price }}</td>   
                         <td><a href="{% url 'e_package_tour_details' package_tour.id %}"><i class="fas fa-eye"></i></a></td>
                       </tr>
-                    {% else %}                    
-                      
+                    {% else %}                       
+                    {% endif %}
+                    {% endfor %}
+                    
+                    {% for tour in tours %}
+                    {% if tour.actual_price == 0 %}
+                      <tr style="color:red;">
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>PT{{ tour.id}}</td>
+                        <td>{{ tour.title }}</td>
+                        <td>{{ tour.get_type_display }}</td>	  
+                        <td>{{ tour.members }}</td>   
+                        <td><a href="{% url 'e_tour_details' tour.id %}"><i class="fas fa-eye"></i></a></td>
+                      </tr>
+                    {% else %}                       
                     {% endif %}
                     {% endfor %}
                   </tbody>
@@ -94,9 +107,9 @@
                     <tr>
                       <th scope="col">Sl.</th>
                       <th scope="col">ID</th>
-                      <th scope="col">Client Name</th>
+                      <th scope="col">Client Name / Title</th>
                       <th scope="col">Type</th>
-                      <th scope="col">Total Price</th>
+                      <th scope="col">Total Price / Members</th>
                       <th scope="col">See More</th>
                     </tr>
                   </thead>
@@ -108,11 +121,24 @@
                       <td>CPI{{ package_islamic.id }}</td>
                       <td>{{ package_islamic.client.name }}</td>
                       <td>{{ package_islamic.get_type_display }}</td>	
-                      <td>{{ package_islamic.client_price }}</td>  	  
+                      <td>{{ package_islamic.client_price }}</td> 	  
                       <td><a href="{% url 'e_package_islamic_details' package_islamic.id %}"><i class="fas fa-eye"></i></a></td>
                     </tr>
-                    {% else %}
-                     
+                    {% else %}                     
+                    {% endif %}
+                    {% endfor %}
+                    
+                    {% for islamic in islamics %}
+                    {% if islamic.actual_price == 0 %}
+                      <tr style="color:red;">
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>PI{{ islamic.id}}</td>
+                        <td>{{ islamic.title }}</td>
+                        <td>{{ islamic.get_type_display }}</td>	  
+                        <td>{{ islamic.members }}</td>   
+                        <td><a href="{% url 'e_islamic_details' islamic.id %}"><i class="fas fa-eye"></i></a></td>
+                      </tr>
+                    {% else %}                       
                     {% endif %}
                     {% endfor %}
                   </tbody>
@@ -124,7 +150,7 @@
                 <tr>
                   <th scope="col">Sl.</th>
                   <th scope="col">ID</th>
-                  <th scope="col">Client Name</th>
+                  <th scope="col">Client Name / Departure</th>
                   <th scope="col">Airline</th>
                   <th scope="col">Total Price</th>
                   <th scope="col">See More</th>
@@ -138,11 +164,24 @@
                   <td>CPA{{ package_air_ticket.id }}</td>
                   <td>{{ package_air_ticket.client.name }}</td>
                   <td>{{ package_air_ticket.airline }}</td>	    
-                  <td>{{ package_air_ticket.client_price }}</td>	  
+                  <td>{{ package_air_ticket.client_price }}</td>  
                   <td><a href="{% url 'e_package_air_ticket_details' package_air_ticket.id %}"><i class="fas fa-eye"></i></a></td>
                 </tr>
-                {% else %}
-                 
+                {% else %}                 
+                {% endif %}
+                {% endfor %}
+                
+                {% for air_ticket in air_tickets %}
+                {% if air_ticket.actual_price == 0 %}
+                 <tr style="color:red;">
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>PA{{ package_air_ticket.id }}</td>
+                  <td>{{ air_ticket.departure }}</td>
+                  <td>{{ air_ticket.airline }}</td>	    
+                  <td>{{ air_ticket.client_price }}</td>  
+                  <td><a href="{% url 'e_air_ticket_details' air_ticket.id %}"><i class="fas fa-eye"></i></a></td>
+                </tr>
+                {% else %}                 
                 {% endif %}
                 {% endfor %}
               </tbody>
@@ -161,19 +200,31 @@
                 </tr>
               </thead>
               <tbody>
-                {% for visa in package_visas %}
-                {% if visa.client_price == 0 %}
+                {% for package_visa in package_visas %}
+                {% if package_visa.client_price == 0 %}
                   <tr style="color:red;">
                     <th scope="row">{{ forloop.counter }}</th>
-                    <td>CPV{{ visa.id }}</td>
-                    <td>{{ visa.client.name }}</td>
+                    <td>CPV{{ package_visa.id }}</td>
+                    <td>{{ package_visa.client.name }}</td>
+                    <td>{{ package_visa.country_name }}</td>	 	  
+                    <td>{{ package_visa.client_price }}</td>	  
+                    <td><a href="{% url 'e_package_visa_details' package_visa.id %}"><i class="fas fa-eye"></i></a></td>
+                  </tr>                
+                {% else %}                  
+                {% endif %}
+                {% endfor %}
+                
+                {% for visa in visas %}
+                {% if visa.actual_price == 0 %}
+                  <tr style="color:red;">
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>PV{{ visa.id }}</td>
+                    <td></td>
                     <td>{{ visa.country_name }}</td>	 	  
                     <td>{{ visa.client_price }}</td>	  
-                    <td><a href="{% url 'e_package_visa_details' visa.id %}"><i class="fas fa-eye"></i></a></td>
-                  </tr>
-                
-                {% else %}
-                  
+                    <td><a href="{% url 'e_visa_details' visa.id %}"><i class="fas fa-eye"></i></a></td>
+                  </tr>                
+                {% else %}                  
                 {% endif %}
                 {% endfor %}
               </tbody>

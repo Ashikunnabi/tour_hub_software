@@ -29,6 +29,7 @@
   
 <div class="col-lg-12">
   <div class="card-body">
+  ID: E{{enquiry_client.id}}<br>
     <form action="{% url 'e_enquiry_client_details' enquiry_client.id %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}     
       {% for f in enquiry_form %}

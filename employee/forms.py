@@ -33,7 +33,7 @@ class ClientForm(ModelForm):
                 'phone'             : forms.TextInput(attrs={'class':'form-control', 'onchange':'autoFill()'}),
                 'email'             : forms.EmailInput(attrs={'class':'form-control', 'onchange':'autoFill()'}),
                 'profession'        : forms.TextInput(attrs={'class':'form-control', 'onchange':'autoFill()'}),
-                'address'   : forms.TextInput(attrs={'class':'form-control', 'onchange':'autoFill()'}),
+                'address'           : forms.TextInput(attrs={'class':'form-control', 'onchange':'autoFill()'}),
                 'photo'             : forms.FileInput(attrs={'class':'form-control'}),
             }
 

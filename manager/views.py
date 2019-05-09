@@ -110,7 +110,6 @@ def year_wise_cost(year):
         cost_month = (actual_price_month + expenditure_month)              
         total_cost.append(cost_month)
         actual_price_month, expenditure_month, cost_month = 0, 0, 0
-    print(total_cost)
     return total_cost
 
       
@@ -201,7 +200,9 @@ def employee_details(request,id):
             user.email=email
             user.set_password(password)
             user.save()
-            # Add employee to a 'employee' group
+            # removing from group
+            user.groups.clear()
+            # Add employee to a specific group
             group = Group.objects.get(name=type)
             group.user_set.add(user)
             form.save()
@@ -1374,12 +1375,20 @@ def payment_details(request, id):
 @has_access(allowed_roles=['admin'])    
 def request_custom_package(request): 
     """ all packages along with payment info and seperate due list """       
+    tours               = Tour.objects.all()[::-1]
+    islamics            = Islamic.objects.all()[::-1]
+    air_tickets         = AirTicket.objects.all()[::-1]
+    visas               = Visa.objects.all()[::-1]
     package_tours       = PackageTour.objects.all()[::-1]
     package_islamics    = PackageIslamic.objects.all()[::-1]
     package_air_tickets = PackageAirTicket.objects.all()[::-1]
     package_visas       = PackageVisa.objects.all()[::-1]
     
     context = {
+        'tours'               : tours,
+        'islamics'            : islamics,
+        'air_tickets'         : air_tickets,
+        'visas'               : visas,
         'package_tours'       : package_tours,
         'package_islamics'    : package_islamics,
         'package_air_tickets' : package_air_tickets,
