@@ -152,7 +152,7 @@ class PackageTourForm(ModelForm):
         model   = PackageTour
         exclude  = ('created_by','in_cart',)      
         widgets = {
-                'client'         : forms.Select(attrs={'class':'custom-select'}),
+                'client'         : forms.Select(attrs={'class':'custom-select chosen'}),
                 'title'          : forms.TextInput(attrs={'class':'form-control'}),
                 'type'           : forms.Select(attrs={'class':'custom-select'}),
                 'places'         : forms.TextInput(attrs={'class':'form-control'}),
@@ -175,7 +175,7 @@ class PackageIslamicForm(ModelForm):
         model   = PackageIslamic
         exclude  = ('created_by','in_cart',)   
         widgets = {
-                'client'         : forms.Select(attrs={'class':'custom-select'}),
+                'client'         : forms.Select(attrs={'class':'custom-select chosen'}),
                 'title'          : forms.TextInput(attrs={'class':'form-control'}),
                 'type'           : forms.Select(attrs={'class':'custom-select'}),
                 'places'         : forms.TextInput(attrs={'class':'form-control'}),
@@ -198,7 +198,7 @@ class PackageAirTicketForm(ModelForm):
         model   = PackageAirTicket
         exclude  = ('created_by','in_cart',)
         widgets = {
-                'client'        : forms.Select(attrs={'class':'custom-select'}),
+                'client'        : forms.Select(attrs={'class':'custom-select chosen'}),
                 'airline'       : forms.TextInput(attrs={'class':'form-control'}),
                 'departure'     : forms.TextInput(attrs={'class':'form-control', 'list':'airports'}),
                 'arrival'       : forms.TextInput(attrs={'class':'form-control', 'list':'airports'}),
@@ -213,7 +213,7 @@ class PackageVisaForm(ModelForm):
         model   = PackageVisa
         exclude  = ('created_by','in_cart',)   
         widgets = {
-                'client'         : forms.Select(attrs={'class':'custom-select'}),
+                'client'         : forms.Select(attrs={'class':'custom-select chosen'}),
                 'country_name'   : forms.TextInput(attrs={'class':'form-control'}),
                 'processing_time': forms.TextInput(attrs={'class':'form-control'}),
                 'actual_price'   : forms.NumberInput(attrs={'class':'form-control','min':'0'}),

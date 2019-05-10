@@ -37,7 +37,7 @@
          {{ f }}          
          {{ f.errors }}          
       {% endfor %}     
-      <br />      
+      <br />  
         <datalist id="airports">
           {% for air_port in air_ports %}
           <option value="{{air_port.name}}">         
@@ -47,4 +47,9 @@
     </form>
   </div>
  </div>
+ 
+ <script type="text/javascript">
+$(".chosen").chosen();
+</script>
+ 
 {% endblock %}
