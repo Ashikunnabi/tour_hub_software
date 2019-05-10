@@ -290,23 +290,23 @@ line-height: 0px;
             <label for="inlineFormCustomSelectPref">Subtotal</label>
           </div>
           <div class="form-group col-md-3">
-            <input type="text" class="form-control" value="{{order.total_ammount}}">
-          </div>
-        </div>
-          <div class="row">
-          <div class="col">
-            <label for="inlineFormCustomSelectPref">Subtotal Less Discount</label>
-          </div>
-          <div class="form-group col-md-3">
             <input type="text" class="form-control" value="{{order.payable_ammount}}">
           </div>
         </div>
           <div class="row">
           <div class="col">
-            <label for="inlineFormCustomSelectPref">Tax Rate</label>
+            <label for="inlineFormCustomSelectPref">Discount</label>
           </div>
           <div class="form-group col-md-3">
-            <input type="text" class="form-control" value="{{order.tax_rate}}">
+            <input type="text" class="form-control" value="{{order.discount}}">
+          </div>
+        </div>
+          <div class="row">
+          <div class="col">
+            <label for="inlineFormCustomSelectPref">Booking</label>
+          </div>
+          <div class="form-group col-md-3">
+            <input type="text" class="form-control" value="{{order.received_ammount}}">
           </div>
         </div>
           <div class="row">
@@ -319,7 +319,7 @@ line-height: 0px;
         </div>
           <div class="row">
           <div class="col">
-            <label for="inlineFormCustomSelectPref">Shipping Handling</label>
+            <label for="inlineFormCustomSelectPref">Delivery / Handling</label>
           </div>
           <div class="form-group col-md-3">
             <input type="text" class="form-control" value="{{order.shipping_handling}}">

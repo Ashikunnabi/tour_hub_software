@@ -67,7 +67,7 @@
                  {{ f }}          
                  {{ f.errors }}          
               {% endfor %}     
-              <br />
+              <br /><br />
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           </div>
@@ -84,7 +84,7 @@
     <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
       <h6 class="m-0 font-weight-bold text-primary">Client Details</h6>
     </a>
-    <input type="text" id="myInput" onkeyup="myFunction()" placeholder=" Search by phone numbers..">      
+        <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
     <!-- Card Content - Collapse -->
     <div class="collapse show" id="collapseCardExample">    
       <div class="card-body">       
@@ -98,7 +98,7 @@
         </ul>
         <div class="tab-content" id="myTabContent">
           <div class="tab-pane fade show active" id="home1" role="tabpanel" aria-labelledby="home1-tab">
-            <table class="table table-hover" id="myTable">
+            <table class="table table-hover">
               <thead>
                 <tr>
                   <th scope="col">Sl.</th>
@@ -109,7 +109,7 @@
                   <th scope="col">See More</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="list">
                 {% for client in clients %}
                 <tr>
                   <th scope="row">{{ forloop.counter }}</th>
@@ -184,25 +184,19 @@ function eautoFill(){
 
 
 
-function myFunction() {
-  // Declare variables 
-  var input, filter, table, tr, td, i, txtValue;
+function filterFunction() {
+  var input, filter, ul, li, a, i;
   input = document.getElementById("myInput");
   filter = input.value.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[2];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    } 
+  div = document.getElementById("list");
+  a = div.getElementsByTagName("tr");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
   }
 }
 </script>

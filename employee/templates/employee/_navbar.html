@@ -15,8 +15,17 @@
 
   <!-- Topbar Navbar -->
   <ul class="navbar-nav ml-auto">
-  <li class="nav-item dropdown no-arrow mx-1">
-      <a class="nav-link dropdown-toggle" href="{% url 'e_cart_details' %}">
+    <li class="nav-item dropdown no-arrow mx-1">
+      <div class="d-none d-sm-inline-block btn btn-sm">
+        <a href="{% url 'e_package_tour' %}" ><img src="{% static 'manager/img/tour.png' %}" style="width:60px;"></a>
+        <a href="{% url 'e_package_islamic' %}"><img src="{% static 'manager/img/hajj.png' %}" style="width:60px;"></a>
+        <a href="{% url 'e_package_air_ticket' %}"><img src="{% static 'manager/img/air_ticket.png' %}" style="width:60px;"></a>
+        <a href="{% url 'e_package_visa' %}"><img src="{% static 'manager/img/visa.png' %}" style="width:60px;"></a>
+      </div>             
+    </li>
+    <div class="topbar-divider d-none d-sm-block"></div>
+    <li class="nav-item dropdown no-arrow mx-1">
+      <a class="nav-link dropdown-toggle" href="{% url 'e_cart_details' %}" >
         <i class="fas fa-shopping-cart"></i>
         <!-- Counter - Messages -->
         <span class="badge badge-danger badge-counter">{{cart}}</span>

@@ -90,7 +90,7 @@
                     {% if order.due_ammount == 0 %}
                     {% else %}
                     <tr>
-                      <td>{{ order.id }}</td>
+                      <td>IV{{order.id|add:"7000"}}</td>
                       <td>{{ order.client.name }}</td>
                       <td>{{ order.get_payment_method_display }}</td>	  
                       <td>{{ order.payable_ammount }}</td> 

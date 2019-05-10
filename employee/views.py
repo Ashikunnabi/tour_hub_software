@@ -187,12 +187,25 @@ def enquiry_client_details(request,id):
     """  view and update a enquiry client depending on id """
     success_message, error_message = None, None  
     enquiry_client = get_object_or_404(EnquiryClient, id=id)
-    enquiry_form = EnquiryClientForm(instance=enquiry_client)  
+    enquiry_form = EnquiryClientForm(instance=enquiry_client)   
     
     if request.method=="POST":
         enquiry_form = EnquiryClientForm(request.POST, instance=enquiry_client)
         if enquiry_form.is_valid():
-            enquiry_form.save()
+            obj = enquiry_form.save(commit=False)
+            if obj.do_register is False:
+                obj.save()
+            else:
+                client = Client()
+                client.created_by = Employee.objects.get(employee_id=request.user.username)
+                client.name = obj.name
+                client.phone = obj.phone
+                client.email = obj.email
+                client.profession = obj.profession
+                client.address = obj.address           
+                client.save()
+                obj.save()
+            
             success_message = "updated enquiry client"
         else:
             error_message = "to update enquiry client"

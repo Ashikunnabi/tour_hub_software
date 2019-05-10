@@ -147,6 +147,24 @@
   <button type="submit" class="btn btn-primary">Update</button>
   <a href="{% url 'm_specific_invoice' order.id %}" target="_blank"  class="btn btn-success float-right">Print invoice</a>
 </form>
-        
+ 
+
+<script>
+
+function calculation(){
+ var payable = document.getElementById('id_payable_ammount').value;
+ var received = document.getElementById('id_received_ammount').value;
+ document.getElementById('id_due_ammount').value = payable - received;
+ 
+ var due = document.getElementById('id_due_ammount').value;
+ if (due<0){
+   console.log(due)
+   document.getElementById('id_received_ammount').value = 0;
+   document.getElementById('id_due_ammount').value = payable;
+ }
+
+}
+
+</script>        
         
 {% endblock %}

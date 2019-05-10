@@ -392,7 +392,20 @@ def enquiry_client_details(request,id):
     if request.method=="POST":
         enquiry_form = EnquiryClientForm(request.POST, instance=enquiry_client)
         if enquiry_form.is_valid():
-            enquiry_form.save()
+            obj = enquiry_form.save(commit=False)
+            if obj.do_register is False:
+                obj.save()
+            else:
+                client = Client()
+                client.created_by = Employee.objects.get(employee_id=request.user.username)
+                client.name = obj.name
+                client.phone = obj.phone
+                client.email = obj.email
+                client.profession = obj.profession
+                client.address = obj.address           
+                client.save()
+                obj.save()
+            
             success_message = "updated enquiry client"
         else:
             error_message = "to update enquiry client"
@@ -1473,7 +1486,6 @@ def order(request):
         - Print invoice     
     """ 
     client_id = None
-    orders = Order.objects.all()[::-1]
     carts = Cart.objects.filter(created_by__employee_id=request.user.username)  
     
     # adding items into order and deleteing from cart
@@ -1507,7 +1519,7 @@ def order(request):
             
     context = {
         'form'     : form,
-        'orders'   : orders,
+        'orders'   : Order.objects.all()[::-1],
         'user_info': Employee.objects.get(employee_id=request.user.username),
         'cart'     : Cart.objects.filter(created_by__employee_id=request.user.username).count,
     }
