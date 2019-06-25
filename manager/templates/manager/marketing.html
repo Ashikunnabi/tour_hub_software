@@ -38,6 +38,21 @@
       <div class="card-body"> 
         <table class="table table-hover">
           <thead>
+              <tr>
+                <th scope="col">
+                  <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                </th>
+                <th scope="col">
+                <input type="number" id="selectStartsFrom" placeholder=" Starts from" onkeyup="sortingEmails()" min="1" step="1">
+                <input type="number" id="selectEndsAt" placeholder=" Ends at" onkeyup="sortingEmails()" min="1" step="1">
+                </th>
+                <th id="error" scope="col" style="color:green">Everithing going right.</th>
+                <th scope="col">Import Emails</th>
+              </tr>
+            </thead>
+        </table>
+        <table class="table table-hover">
+          <thead>
             <tr>
               <th scope="col">Sl.</th>
               <th scope="col">Name</th>
@@ -45,13 +60,13 @@
               <th scope="col">Email</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody  id="list">
             {% for client in clients %}
-            <tr>
+            <tr onclick="copyEmailFunction({{ client.id }})">
               <th scope="row">{{ forloop.counter }}</th>
               <td>{{ client.name }}</td>
               <td>0{{ client.phone }}</td>	  
-              <td>{{ client.email }}</td>	               
+              <td id="myInput{{ client.id }}">{{ client.email }}</td>	               
             </tr>
             {% endfor %}
           </tbody>
@@ -61,6 +76,132 @@
   </div>
 </div>
 
+<script>
+
+//Click on the email and it will copy that email
+function copyEmailFunction(id) {
+  /* Get the text field */
+  var copyText = document.getElementById("myInput"+id).innerText;  
+  // Create a dummy input to copy the string array inside it
+  var dummy = document.createElement("input");
+  // Add it to the document
+  document.body.appendChild(dummy);
+  // Set its ID
+  dummy.setAttribute("id", "dummy_id");
+  // Output the array into it
+  document.getElementById("dummy_id").value=copyText;
+  // Select it
+  dummy.select();
+  // Copy its contents
+  document.execCommand("copy");
+  // Remove it as its not needed anymore
+  document.body.removeChild(dummy);
+  document.getElementById("myInput"+id).innerText = "COPIED";
+  /* Alert the copied text */
+  setInterval(function(){ document.getElementById("myInput"+id).innerText = copyText; }, 3000);
+}
+
+
+// For search bar 
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("list");
+  a = div.getElementsByTagName("tr");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// sorting number of emails and copy all of them using above functions 
+function sortingEmails() {
+  // getting the value from input
+  var selectStartsFrom = document.getElementById('selectStartsFrom').value;
+  var selectEndsAt     = document.getElementById('selectEndsAt').value;
+  var selectEndsAt     = (selectEndsAt=="")?selectStartsFrom:selectEndsAt;  
+  
+  //Creating a list between range
+  var range = [];
+  for (var i = parseInt(selectStartsFrom); i <= selectEndsAt; i++) {
+    range.push(i);
+  }
+  
+  // Removing rows which are not in range
+  var a, i, emails='', count=0;
+  div    = document.getElementById("list");
+  a      = div.getElementsByTagName("tr");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].cells[0].textContent || a[i].cells[0].innerText;
+    if(range.includes(parseInt(txtValue))){
+      a[i].style.display = "";
+      emails += a[i].cells[3].textContent+';';
+      count++;
+    }else {
+      a[i].style.display = "none";
+    }
+  }
+  console.log(emails)
+  
+  // Copy emails  
+  // Create a dummy input to copy the string array inside it
+  var dummy = document.createElement("input");
+  // Add it to the document
+  document.body.appendChild(dummy);
+  // Set its ID
+  dummy.setAttribute("id", "dummy_id");
+  // Output the array into it
+  document.getElementById("dummy_id").value=emails;
+  // Select it
+  dummy.select();
+  // Copy its contents
+  document.execCommand("copy");
+  // Remove it as its not needed anymore
+  document.body.removeChild(dummy);  
+  
+  
+  // VALIDATING INPUTS
+  if (selectStartsFrom==''){
+    document.getElementById('error').style.color='red';
+    document.getElementById('error').textContent='You must fillup "Starts from" first.';
+    document.getElementById('selectEndsAt').value='';
+    document.getElementById('selectEndsAt').disabled=true;
+  }else if(range.length>500){
+    document.getElementById('selectEndsAt').disabled=false;
+    document.getElementById('error').style.color='red';
+    document.getElementById('error').textContent='Do not copy more than 500 emails.';
+  
+  }else if(range.length<=500){
+    document.getElementById('selectEndsAt').disabled=false;
+    document.getElementById('error').style.color='green';
+    document.getElementById('error').textContent='Successfully copied '+count+' emails.';
+  
+  }else{
+    document.getElementById('selectEndsAt').disabled=false;
+    document.getElementById('error').style.color='green';
+    document.getElementById('error').textContent='Everithing going right.';
+  }
+}
+
+</script>
 
         
 {% endblock %}
