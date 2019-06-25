@@ -36,41 +36,88 @@
     <!-- Card Content - Collapse -->
     <div class="collapse show" id="collapseCardExample">
       <div class="card-body"> 
-        <table class="table table-hover">
-          <thead>
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Available Client Details</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Emport(ed) Clients</a>
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <table class="table table-hover">
+            <thead>
+                <tr>
+                  <th scope="col">
+                    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                  </th>
+                  <th scope="col">
+                  <input type="number" id="selectStartsFrom" placeholder=" Starts from" onkeyup="sortingEmails()" min="1" step="1">
+                  <input type="number" id="selectEndsAt" placeholder=" Ends at" onkeyup="sortingEmails()" min="1" step="1">
+                  </th>
+                  <th id="error" scope="col" style="color:green">Everithing is going right.</th>
+                </tr>
+              </thead>
+          </table>
+          <table class="table table-hover">
+            <thead>
               <tr>
-                <th scope="col">
-                  <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-                </th>
-                <th scope="col">
-                <input type="number" id="selectStartsFrom" placeholder=" Starts from" onkeyup="sortingEmails()" min="1" step="1">
-                <input type="number" id="selectEndsAt" placeholder=" Ends at" onkeyup="sortingEmails()" min="1" step="1">
-                </th>
-                <th id="error" scope="col" style="color:green">Everithing going right.</th>
-                <th scope="col">Import Emails</th>
+                <th scope="col">Sl.</th>
+                <th scope="col">Name</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Email</th>
               </tr>
             </thead>
-        </table>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Sl.</th>
-              <th scope="col">Name</th>
-              <th scope="col">Phone Number</th>
-              <th scope="col">Email</th>
-            </tr>
-          </thead>
-          <tbody  id="list">
-            {% for client in clients %}
-            <tr onclick="copyEmailFunction({{ client.id }})">
-              <th scope="row">{{ forloop.counter }}</th>
-              <td>{{ client.name }}</td>
-              <td>0{{ client.phone }}</td>	  
-              <td id="myInput{{ client.id }}">{{ client.email }}</td>	               
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+            <tbody  id="list">
+              {% for client in clients %}
+              <tr onclick="copyEmailFunction({{ client.id }})">
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ client.name }}</td>
+                <td>0{{ client.phone }}</td>	  
+                <td id="myInput{{ client.id }}">{{ client.email }}</td>	               
+              </tr>
+              {% endfor %}
+             </tbody>
+           </table>         
+          </div>   
+          
+          
+          
+          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <table class="table table-hover">
+              <thead>
+                  <tr>
+                    <th scope="col">
+                      <input type="text" placeholder=" Input category name" id="catagoryName">
+                    </th>
+                    <th scope="col">Create</th>
+                  </tr>
+                </thead>
+            </table>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Sl.</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Phone Number</th>
+                  <th scope="col">Email</th>
+                </tr>
+              </thead>
+              <tbody  id="list">
+                {% for client in clients %}
+                <tr onclick="copyEmailFunction({{ client.id }})">
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ client.name }}</td>
+                  <td>0{{ client.phone }}</td>	  
+                  <td id="myInput{{ client.id }}">{{ client.email }}</td>	               
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          
+          
+        </div>
+        
       </div>
     </div>
   </div>
@@ -118,18 +165,6 @@ function filterFunction() {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // sorting number of emails and copy all of them using above functions 
@@ -180,10 +215,15 @@ function sortingEmails() {
   
   // VALIDATING INPUTS
   if (selectStartsFrom==''){
-    document.getElementById('error').style.color='red';
-    document.getElementById('error').textContent='You must fillup "Starts from" first.';
-    document.getElementById('selectEndsAt').value='';
-    document.getElementById('selectEndsAt').disabled=true;
+    if (selectStartsFrom=='' && selectEndsAt==''){
+      filterFunction(); // Showing all emails as no shortig 
+    } else{
+      document.getElementById('error').style.color='red';
+      document.getElementById('error').textContent='You must fillup "Starts from" first.';
+      document.getElementById('selectEndsAt').value='';
+      document.getElementById('selectEndsAt').disabled=true;
+      filterFunction(); // showing all emails
+    }
   }else if(range.length>500){
     document.getElementById('selectEndsAt').disabled=false;
     document.getElementById('error').style.color='red';
@@ -197,7 +237,7 @@ function sortingEmails() {
   }else{
     document.getElementById('selectEndsAt').disabled=false;
     document.getElementById('error').style.color='green';
-    document.getElementById('error').textContent='Everithing going right.';
+    document.getElementById('error').textContent='Everithing is going right.';
   }
 }
 
