@@ -89,6 +89,9 @@
                     <th scope="col">
                       <input type="text" placeholder=" Input category name" id="catagoryName">
                     </th>
+                    <th scope="col">
+                      <input type="file">
+                    </th>
                     <th scope="col">Create</th>
                   </tr>
                 </thead>
@@ -96,22 +99,10 @@
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th scope="col">Sl.</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Phone Number</th>
-                  <th scope="col">Email</th>
+                  aa
                 </tr>
               </thead>
-              <tbody  id="list">
-                {% for client in clients %}
-                <tr onclick="copyEmailFunction({{ client.id }})">
-                  <th scope="row">{{ forloop.counter }}</th>
-                  <td>{{ client.name }}</td>
-                  <td>0{{ client.phone }}</td>	  
-                  <td id="myInput{{ client.id }}">{{ client.email }}</td>	               
-                </tr>
-                {% endfor %}
-              </tbody>
+              
             </table>
           </div>
           
@@ -198,19 +189,19 @@ function sortingEmails() {
   
   // Copy emails  
   // Create a dummy input to copy the string array inside it
-  var dummy = document.createElement("input");
+  var dummyy = document.createElement("input");
   // Add it to the document
-  document.body.appendChild(dummy);
+  document.body.appendChild(dummyy);
   // Set its ID
-  dummy.setAttribute("id", "dummy_id");
+  dummyy.setAttribute("id", "dummyy_id");
   // Output the array into it
-  document.getElementById("dummy_id").value=emails;
+  document.getElementById("dummyy_id").value=emails;
   // Select it
-  dummy.select();
+  dummyy.select();
   // Copy its contents
   document.execCommand("copy");
   // Remove it as its not needed anymore
-  document.body.removeChild(dummy);  
+  document.body.removeChild(dummyy);  
   
   
   // VALIDATING INPUTS
