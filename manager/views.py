@@ -1334,9 +1334,10 @@ def package_visa_delete(request,id):
 def client_marketing(request):
     """ client's email and phone number """
     clients = Client.objects.all()
-    
+    enquiry_clients = EnquiryClient.objects.all()
     context = {
         'clients': clients,
+        'enquiry_clients': enquiry_clients,
         'user_info': Employee.objects.get(employee_id=request.user.username),
         'cart': Cart.objects.filter(created_by__employee_id=request.user.username).count,
     }

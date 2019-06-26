@@ -38,8 +38,9 @@
       <div class="card-body"> 
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Available Client Details</a>
-            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Emport(ed) Clients</a>
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Registered Client Details</a>
+            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Enquiry Client Details</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Import(ed) Client Details</a>
           </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
@@ -81,6 +82,43 @@
           </div>   
           
           
+          <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+            <table class="table table-hover">
+              <thead>
+                  <tr>
+                    <th scope="col">
+                      <input type="text" placeholder="Search.." id="myInputE" onkeyup="filterFunctionE()">
+                    </th>
+                    <th scope="col">
+                    <input type="number" id="selectStartsFromE" placeholder=" Starts from" onkeyup="sortingEmailsE()" min="1" step="1">
+                    <input type="number" id="selectEndsAtE" placeholder=" Ends at" onkeyup="sortingEmailsE()" min="1" step="1">
+                    </th>
+                    <th id="errorE" scope="col" style="color:green">Everithing is going right.</th>
+                  </tr>
+                </thead>
+              </table>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Sl.</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Email</th>
+                  </tr>
+                </thead>
+                <tbody  id="list2">
+                {% for client in enquiry_clients %}
+                <tr onclick="copyEmailFunctionE({{ client.id }})">
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ client.name }}</td>
+                  <td>0{{ client.phone }}</td>	  
+                  <td id="myInputE{{ client.id }}">{{ client.email }}</td>	               
+                </tr>
+                {% endfor %}
+               </tbody>
+             </table> 
+          </div>
+          
           
           <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
             <table class="table table-hover">
@@ -115,6 +153,7 @@
 </div>
 
 <script>
+// ------------Registered Client---------------
 
 //Click on the email and it will copy that email
 function copyEmailFunction(id) {
@@ -185,7 +224,7 @@ function sortingEmails() {
       a[i].style.display = "none";
     }
   }
-  console.log(emails)
+  // console.log(emails)
   
   // Copy emails  
   // Create a dummy input to copy the string array inside it
@@ -229,6 +268,125 @@ function sortingEmails() {
     document.getElementById('selectEndsAt').disabled=false;
     document.getElementById('error').style.color='green';
     document.getElementById('error').textContent='Everithing is going right.';
+  }
+}
+</script>
+
+<script>
+// ------------Enquiry Client---------------
+
+//Click on the email and it will copy that email
+function copyEmailFunctionE(id) {
+  /* Get the text field */
+  var copyText = document.getElementById("myInputE"+id).innerText;  
+  // Create a dummy input to copy the string array inside it
+  var dummy = document.createElement("input");
+  // Add it to the document
+  document.body.appendChild(dummy);
+  // Set its ID
+  dummy.setAttribute("id", "dummy_id");
+  // Output the array into it
+  document.getElementById("dummy_id").value=copyText;
+  // Select it
+  dummy.select();
+  // Copy its contents
+  document.execCommand("copy");
+  // Remove it as its not needed anymore
+  document.body.removeChild(dummy);
+  document.getElementById("myInputE"+id).innerText = "COPIED";
+  /* Alert the copied text */
+  setInterval(function(){ document.getElementById("myInputE"+id).innerText = copyText; }, 3000);
+}
+
+
+// For search bar 
+function filterFunctionE() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInputE");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("list2");
+  a = div.getElementsByTagName("tr");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+
+
+// sorting number of emails and copy all of them using above functions 
+function sortingEmailsE() {
+  // getting the value from input
+  var selectStartsFrom = document.getElementById('selectStartsFromE').value;
+  var selectEndsAt     = document.getElementById('selectEndsAtE').value;
+  var selectEndsAt     = (selectEndsAt=="")?selectStartsFrom:selectEndsAt;  
+  
+  //Creating a list between range
+  var range = [];
+  for (var i = parseInt(selectStartsFrom); i <= selectEndsAt; i++) {
+    range.push(i);
+  }
+  
+  // Removing rows which are not in range
+  var a, i, emails='', count=0;
+  div    = document.getElementById("list2");
+  a      = div.getElementsByTagName("tr");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].cells[0].textContent || a[i].cells[0].innerText;
+    if(range.includes(parseInt(txtValue))){
+      a[i].style.display = "";
+      emails += a[i].cells[3].textContent+';';
+      count++;
+    }else {
+      a[i].style.display = "none";
+    }
+  }
+  
+  // Copy emails  
+  // Create a dummy input to copy the string array inside it
+  var dummyy = document.createElement("input");
+  // Add it to the document
+  document.body.appendChild(dummyy);
+  // Set its ID
+  dummyy.setAttribute("id", "dummyy_id");
+  // Output the array into it
+  document.getElementById("dummyy_id").value=emails;
+  // Select it
+  dummyy.select();
+  // Copy its contents
+  document.execCommand("copy");
+  // Remove it as its not needed anymore
+  document.body.removeChild(dummyy);  
+  
+  
+  // VALIDATING INPUTS
+  if (selectStartsFrom==''){
+    if (selectStartsFrom=='' && selectEndsAt==''){
+      filterFunctionE(); // Showing all emails as no shortig 
+    } else{
+      document.getElementById('errorE').style.color='red';
+      document.getElementById('errorE').textContent='You must fillup "Starts from" first.';
+      document.getElementById('selectEndsAtE').value='';
+      document.getElementById('selectEndsAtE').disabled=true;
+      filterFunctionE(); // showing all emails
+    }
+  }else if(range.length>500){
+    document.getElementById('selectEndsAtE').disabled=false;
+    document.getElementById('errorE').style.color='red';
+    document.getElementById('errorE').textContent='Do not copy more than 500 emails.';
+  
+  }else if(range.length<=500){
+    document.getElementById('selectEndsAtE').disabled=false;
+    document.getElementById('errorE').style.color='green';
+    document.getElementById('errorE').textContent='Successfully copied '+count+' emails.';
+  
+  }else{
+    document.getElementById('selectEndsAtE').disabled=false;
+    document.getElementById('errorE').style.color='green';
+    document.getElementById('errorE').textContent='Everithing is going right.';
   }
 }
 
