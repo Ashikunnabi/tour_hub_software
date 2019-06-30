@@ -14,7 +14,7 @@ from .forms import (  EmployeeForm, ClientForm, EnquiryClientForm, AirTicketForm
 from .models import ( Employee, Client, EnquiryClient, AirTicket, AirPort, 
                       Islamic, Tour, Visa, Cart, Order,
                       PackageTour, PackageIslamic,Expenditure,
-                      PackageAirTicket, PackageVisa, Marketing,
+                      PackageAirTicket, PackageVisa, Marketing, MarketingEmail,
                     )
 
                     
@@ -1326,8 +1326,9 @@ def package_visa_delete(request,id):
         'user_info': Employee.objects.get(employee_id=request.user.username),
         'cart': Cart.objects.filter(created_by__employee_id=request.user.username).count,
     }
-    return render(request, 'manager/package_visa.html', context)
-
+    return render(request, 'manager/package_visa.html', context)   
+    
+    
     
 @login_required(login_url='login')
 @has_access(allowed_roles=['admin'])
@@ -1340,10 +1341,10 @@ def client_marketing(request):
     if request.method=="POST":
         category_name = request.POST['categoryName']
         border_color = request.POST['boarderColor']
-        file          = request.POST['file']
+        file          = request.FILES['file']
         
         if category_name == '' or border_color == '' or file == '':
-            error_message = "to add a new tour"
+            error_message = "to add a new  marketing category"
         else:
             form = Marketing(category_name=category_name,
                              border_color=border_color,
@@ -1352,22 +1353,30 @@ def client_marketing(request):
                              )
             form.save()
             success_message = "added a new marketing category"
-            print('INSIDE')
+            
+            # Adding excle files email in MarketngEmail
+            file = Marketing.objects.all().last()
+            emails = []
+            with open(file.file.path, 'r') as f:
+                for mail in f:
+                    emails.append(mail[:-1])
+                for mail in emails:
+                    email_add=MarketingEmail(category_name=file,
+                                 created_by = Employee.objects.get(employee_id=request.user.username),
+                                 email=mail
+                                 )
+                    email_add.save()
             
     context = {
-        'clients': clients,
-        'success_message': success_message,
-        'error_message': error_message,
-        'enquiry_clients': enquiry_clients,
-        'marketing': Marketing.objects.all(),
-        'user_info': Employee.objects.get(employee_id=request.user.username),
-        'cart': Cart.objects.filter(created_by__employee_id=request.user.username).count,
+        'clients'         : clients,
+        'success_message' : success_message,
+        'error_message'   : error_message,
+        'enquiry_clients' : enquiry_clients,
+        'marketing'       : Marketing.objects.all(),
+        'user_info'       : Employee.objects.get(employee_id=request.user.username),
+        'cart'            : Cart.objects.filter(created_by__employee_id=request.user.username).count,
     }
     return render(request, 'manager/marketing.html', context)
-    
-    
-           
-    
     
     
     

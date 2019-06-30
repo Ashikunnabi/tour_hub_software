@@ -326,6 +326,13 @@ class Marketing(models.Model):
     border_color    = models.CharField(max_length=30)
     file            = models.FileField()
     
+
+class MarketingEmail(models.Model):
+    created_by      = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at      = models.DateField(auto_now_add=True)
+    category_name   = models.ForeignKey(Marketing, on_delete=models.CASCADE)
+    email           = models.CharField(max_length=300)
+    
     
     
     
