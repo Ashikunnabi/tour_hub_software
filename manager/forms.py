@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Employee, Client, EnquiryClient, AirPort, AirTicket, Islamic, Tour, Visa, PackageIslamic, PackageTour, PackageAirTicket, PackageVisa, Order, Expenditure
+from .models import Employee, Client, EnquiryClient, Marketing, AirPort, AirTicket, Islamic, Tour, Visa, PackageIslamic, PackageTour, PackageAirTicket, PackageVisa, Order, Expenditure
 
 
 class EmployeeForm(ModelForm):
@@ -241,7 +241,7 @@ class OrderForm(ModelForm):
                 'payable_ammount'    : forms.NumberInput(attrs={'class':'form-control','min':'0','onkeyup':'calculation()'}),                
                 'received_ammount'   : forms.NumberInput(attrs={'class':'form-control','min':'0','onkeyup':'calculation()'}),
                 'due_ammount'        : forms.NumberInput(attrs={'class':'form-control','min':'0'}),                  
-                'advertisement'       : forms.FileInput(attrs={'class':'form-control'}),
+                'advertisement'      : forms.FileInput(attrs={'class':'form-control'}),
             }
 
 
@@ -264,5 +264,19 @@ class ExpenditureForm(ModelForm):
                 'cost_04'          : forms.NumberInput(attrs={'class':'form-control','min':'0'}),
                 'description_05'   : forms.TextInput(attrs={'class':'form-control'}),
                 'cost_05'          : forms.NumberInput(attrs={'class':'form-control','min':'0'}),
-                'total'           : forms.NumberInput(attrs={'class':'form-control','min':'0'}),
+                'total'            : forms.NumberInput(attrs={'class':'form-control','min':'0'}),
             }
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            

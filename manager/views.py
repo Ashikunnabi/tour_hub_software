@@ -14,7 +14,7 @@ from .forms import (  EmployeeForm, ClientForm, EnquiryClientForm, AirTicketForm
 from .models import ( Employee, Client, EnquiryClient, AirTicket, AirPort, 
                       Islamic, Tour, Visa, Cart, Order,
                       PackageTour, PackageIslamic,Expenditure,
-                      PackageAirTicket, PackageVisa,
+                      PackageAirTicket, PackageVisa, Marketing,
                     )
 
                     
@@ -1333,15 +1333,42 @@ def package_visa_delete(request,id):
 @has_access(allowed_roles=['admin'])
 def client_marketing(request):
     """ client's email and phone number """
+    success_message, error_message = None, None
     clients = Client.objects.all()
     enquiry_clients = EnquiryClient.objects.all()
+    
+    if request.method=="POST":
+        category_name = request.POST['categoryName']
+        border_color = request.POST['boarderColor']
+        file          = request.POST['file']
+        
+        if category_name == '' or border_color == '' or file == '':
+            error_message = "to add a new tour"
+        else:
+            form = Marketing(category_name=category_name,
+                             border_color=border_color,
+                             file=file,
+                             created_by = Employee.objects.get(employee_id=request.user.username)
+                             )
+            form.save()
+            success_message = "added a new marketing category"
+            print('INSIDE')
+            
     context = {
         'clients': clients,
+        'success_message': success_message,
+        'error_message': error_message,
         'enquiry_clients': enquiry_clients,
+        'marketing': Marketing.objects.all(),
         'user_info': Employee.objects.get(employee_id=request.user.username),
         'cart': Cart.objects.filter(created_by__employee_id=request.user.username).count,
     }
     return render(request, 'manager/marketing.html', context)
+    
+    
+           
+    
+    
     
     
 @login_required(login_url='login')

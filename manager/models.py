@@ -318,6 +318,14 @@ class Expenditure(models.Model):
     cost_05         = models.IntegerField(default=0)
     total           = models.IntegerField()
     
+
+class Marketing(models.Model):
+    created_by      = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    created_at      = models.DateField(auto_now_add=True)
+    category_name   = models.CharField(max_length=30)
+    border_color    = models.CharField(max_length=30)
+    file            = models.FileField()
+    
     
     
     

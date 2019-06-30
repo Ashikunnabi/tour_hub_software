@@ -124,29 +124,34 @@
             <table class="table table-hover">
               <thead>
                   <tr>
-                    <th scope="col">
-                      <input type="text" placeholder=" Input category name" id="catagoryName">
-                      <input type="color">
-                    </th>
-                    <th scope="col">
-                      <input type="file">
-                    </th>
-                    <th scope="col">
-                    <input type="submit" class="btn btn-warning" value="Create">
-                    </th>
+                    <form action="" method="POST">
+                    {% csrf_token %}
+                      <th scope="col">
+                        <input type="text" placeholder=" Input category name" id="catagoryName" name="categoryName">
+                        <input type="color" name="boarderColor">
+                      </th>
+                      <th scope="col">
+                        <input type="file" name="file">
+                      </th>
+                      <th scope="col">
+                      <input type="submit" class="btn btn-warning" value="Create">
+                      </th>
+                    </form>
                   </tr>
                 </thead>
             </table>
-            <div class="row">      
+            <div class="row">   
+             {% for market in marketing %}            
               <div class="col-lg-2 mb-4">
                 <a href="/m/client/add" class="a-extra">
-                  <div class="card border-success text-black shadow">
+                  <div class="card text-black shadow" style="border:{{market.border_color}} 1px solid">
                     <div class="card-body">
-                      Client
+                      {{market.category_name}}
                     </div>
                   </div>
                 </a>
             </div>
+            {% endfor %}
           </div>
                     
         </div>
