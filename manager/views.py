@@ -1,8 +1,7 @@
-from django.shortcuts import get_object_or_404, render, redirect
-from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.decorators import login_required
 import datetime
+from django.shortcuts import get_object_or_404, render, redirect
 
 from authentication.decorators import has_access
 from .forms import (  EmployeeForm, ClientForm, EnquiryClientForm, AirTicketForm, AirPortForm, 
@@ -1373,6 +1372,7 @@ def client_marketing(request):
         'error_message'   : error_message,
         'enquiry_clients' : enquiry_clients,
         'marketing'       : Marketing.objects.all(),
+        'marketing_emails': MarketingEmail.objects.all(),
         'user_info'       : Employee.objects.get(employee_id=request.user.username),
         'cart'            : Cart.objects.filter(created_by__employee_id=request.user.username).count,
     }
