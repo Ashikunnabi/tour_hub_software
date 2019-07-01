@@ -1339,14 +1339,12 @@ def client_marketing(request):
     
     if request.method=="POST":
         category_name = request.POST['categoryName']
-        border_color = request.POST['boarderColor']
         file          = request.FILES['file']
         
         if category_name == '' or border_color == '' or file == '':
             error_message = "to add a new  marketing category"
         else:
             form = Marketing(category_name=category_name,
-                             border_color=border_color,
                              file=file,
                              created_by = Employee.objects.get(employee_id=request.user.username)
                              )

@@ -128,7 +128,6 @@
                     {% csrf_token %}
                       <th scope="col">
                         <input type="text" placeholder=" Input category name" id="catagoryName" name="categoryName">
-                        <input type="color" name="boarderColor">
                       </th>
                       <th scope="col">
                         <input type="file" name="file">
@@ -158,13 +157,13 @@
                         <thead class="table-info">
                           <tr>
                             <th scope="col">
-                              <input type="text" placeholder=" Search.." id="myInputE" onkeyup="filterFunctionE()">
+                              <input type="text" placeholder=" Search.." id="myInputI{{market.id}}" onkeyup="filterFunctionI{{market.id}}()">
                             </th>
                             <th scope="col">
-                            <input type="number" id="selectStartsFromE" placeholder=" Starts from" onkeyup="sortingEmailsE()" min="1" step="1">
-                            <input type="number" id="selectEndsAtE" placeholder=" Ends at" onkeyup="sortingEmailsE()" min="1" step="1">
+                            <input type="number" id="selectStartsFromI{{market.id}}" placeholder=" Starts from" onkeyup="sortingEmailsI{{market.id}}()" min="1" step="1">
+                            <input type="number" id="selectEndsAtI{{market.id}}" placeholder=" Ends at" onkeyup="sortingEmailsI{{market.id}}()" min="1" step="1">
                             </th>
-                            <th id="errorE" scope="col" style="color:green">Everithing is going right.</th>
+                            <th id="errorI{{market.id}}" scope="col" style="color:green">Everithing is going right.</th>
                           </tr>
                         </thead>
                       </table>                     
@@ -176,12 +175,12 @@
                             <th scope="col">Email</th>
                           </tr>
                         </thead>
-                        <tbody  id="list2">
+                        <tbody  id="listI{{market.id}}">
                           {% for emails in marketing_emails %}
                             {% if market == emails.category_name %}
-                              <tr onclick="copyEmailFunctionE({{ client.id }})">
+                              <tr onclick="copyEmailFunctionI{{market.id}}({{emails.id}})">
                                 <th scope="row">{{ forloop.counter }}</th>
-                                <td id="myInputE{{ client.id }}">{{ emails.email }}</td>	               
+                                <td id="myInputI{{emails.id}}">{{ emails.email }}</td>	               
                               </tr>                        
                             {% else %}
                             {% endif %}  
@@ -439,6 +438,126 @@ function sortingEmailsE() {
   }
 }
 
+</script>
+
+<script>
+// ------------Imported Client---------------
+{% for market in marketing %}
+//Click on the email and it will copy that email
+function copyEmailFunctionI{{market.id}}(id) {
+  /* Get the text field */
+  var copyText = document.getElementById("myInputI"+id).innerText;  
+  // Create a dummy input to copy the string array inside it
+  var dummy = document.createElement("input");
+  // Add it to the document
+  document.body.appendChild(dummy);
+  // Set its ID
+  dummy.setAttribute("id", "dummy_id");
+  // Output the array into it
+  document.getElementById("dummy_id").value=copyText;
+  // Select it
+  dummy.select();
+  // Copy its contents
+  document.execCommand("copy");
+  // Remove it as its not needed anymore
+  document.body.removeChild(dummy);
+  document.getElementById("myInputI"+id).innerText = "COPIED";
+  /* Alert the copied text */
+  setInterval(function(){ document.getElementById("myInputI"+id).innerText = copyText; }, 3000);
+}
+
+
+// For search bar 
+function filterFunctionI{{market.id}}() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInputI{{market.id}}");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("listI{{market.id}}");
+  a = div.getElementsByTagName("tr");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+
+
+// sorting number of emails and copy all of them using above functions 
+function sortingEmailsI{{market.id}}() {
+  // getting the value from input
+  var selectStartsFrom = document.getElementById('selectStartsFromI{{market.id}}').value;
+  var selectEndsAt     = document.getElementById('selectEndsAtI{{market.id}}').value;
+  var selectEndsAt     = (selectEndsAt=="")?selectStartsFrom:selectEndsAt;  
+  
+  //Creating a list between range
+  var range = [];
+  for (var i = parseInt(selectStartsFrom); i <= selectEndsAt; i++) {
+    range.push(i);
+  }
+  
+  // Removing rows which are not in range
+  var a, i, emails='', count=0;
+  div    = document.getElementById("listI{{market.id}}");
+  a      = div.getElementsByTagName("tr");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].cells[0].textContent || a[i].cells[0].innerText;
+    if(range.includes(parseInt(txtValue))){
+      a[i].style.display = "";
+      emails += a[i].cells[1].textContent+';';
+      count++;
+    }else {
+      a[i].style.display = "none";
+    }
+  }
+  
+  // Copy emails  
+  // Create a dummy input to copy the string array inside it
+  var dummyy = document.createElement("input");
+  // Add it to the document
+  document.body.appendChild(dummyy);
+  // Set its ID
+  dummyy.setAttribute("id", "dummyy_id");
+  // Output the array into it
+  document.getElementById("dummyy_id").value=emails;
+  // Select it
+  dummyy.select();
+  // Copy its contents
+  document.execCommand("copy");
+  // Remove it as its not needed anymore
+  document.body.removeChild(dummyy);  
+  
+  
+  // VALIDATING INPUTS
+  if (selectStartsFrom==''){
+    if (selectStartsFrom=='' && selectEndsAt==''){
+      filterFunctionE(); // Showing all emails as no shortig 
+    } else{
+      document.getElementById('errorI{{market.id}}').style.color='red';
+      document.getElementById('errorI{{market.id}}').textContent='You must fillup "Starts from" first.';
+      document.getElementById('selectEndsAtI{{market.id}}').value='';
+      document.getElementById('selectEndsAtI{{market.id}}').disabled=true;
+      filterFunctionE(); // showing all emails
+    }
+  }else if(range.length>500){
+    document.getElementById('selectEndsAtI{{market.id}}').disabled=false;
+    document.getElementById('errorI{{market.id}}').style.color='red';
+    document.getElementById('errorI{{market.id}}').textContent='Do not copy more than 500 emails.';
+  
+  }else if(range.length<=500){
+    document.getElementById('selectEndsAtI{{market.id}}').disabled=false;
+    document.getElementById('errorI{{market.id}}').style.color='green';
+    document.getElementById('errorI{{market.id}}').textContent='Successfully copied '+count+' emails.';
+  
+  }else{
+    document.getElementById('selectEndsAtI{{market.id}}').disabled=false;
+    document.getElementById('errorI{{market.id}}').style.color='green';
+    document.getElementById('errorI{{market.id}}').textContent='Everithing is going right.';
+  }
+}
+{% endfor %}
 </script>
 
         
