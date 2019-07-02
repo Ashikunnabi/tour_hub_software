@@ -1341,7 +1341,7 @@ def client_marketing(request):
         category_name = request.POST['categoryName']
         file          = request.FILES['file']
         
-        if category_name == '' or border_color == '' or file == '':
+        if category_name == '' or file == '':
             error_message = "to add a new  marketing category"
         else:
             form = Marketing(category_name=category_name,
