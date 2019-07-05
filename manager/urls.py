@@ -28,12 +28,16 @@ from .views import ( employee_add, employee_details, employee_delete,
                      package_air_ticket, package_air_ticket_add, package_air_ticket_details, package_air_ticket_delete,
                      package_visa, package_visa_add, package_visa_details, package_visa_delete,
                      expenditure_add, expenditure_details, expenditure_delete, invoice,specific_invoice,
+                     client_marketing_more_email, client_marketing_delete_category,
                     )
 urlpatterns = [
     path('', index, name='m_index'),
-    path('marketing', client_marketing, name='m_client_marketing'),
     path('payment', payment, name='m_payment'),
     path('payment/details/<int:id>', payment_details, name='m_payment_details'),
+    
+    path('marketing', client_marketing, name='m_client_marketing'),
+    path('marketing/add', client_marketing_more_email, name='m_client_marketing_more_email'),
+    path('marketing/delete', client_marketing_delete_category, name='m_client_marketing_delete_category'),
     
     path('requests', request_custom_package, name='m_request_custom_package'),
     path('cart/details', cart_details, name='m_cart_details'),

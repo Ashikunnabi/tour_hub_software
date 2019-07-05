@@ -49,11 +49,11 @@
             <thead>
                 <tr>
                   <th scope="col">
-                    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                    <input type="text" placeholder="Search.." id="myInput" onchange="filterFunction()" onkeypress="filterFunction()">
                   </th>
                   <th scope="col">
-                  <input type="number" id="selectStartsFrom" placeholder=" Starts from" onkeyup="sortingEmails()" min="1" step="1">
-                  <input type="number" id="selectEndsAt" placeholder=" Ends at" onkeyup="sortingEmails()" min="1" step="1">
+                  <input type="number" id="selectStartsFrom" placeholder=" Starts from" onchange="sortingEmails()" onkeypress="sortingEmails()" min="1" step="1">
+                  <input type="number" id="selectEndsAt" placeholder=" Ends at" onchange="sortingEmails()" onkeypress="sortingEmails()" min="1" step="1">
                   </th>
                   <th id="error" scope="col" style="color:green">Everithing is going right.</th>
                 </tr>
@@ -87,11 +87,11 @@
               <thead>
                   <tr>
                     <th scope="col">
-                      <input type="text" placeholder="Search.." id="myInputE" onkeyup="filterFunctionE()">
+                      <input type="text" placeholder="Search.." id="myInputE" onchange="filterFunctionE()" onkeypress="filterFunctionE()">
                     </th>
                     <th scope="col">
-                    <input type="number" id="selectStartsFromE" placeholder=" Starts from" onkeyup="sortingEmailsE()" min="1" step="1">
-                    <input type="number" id="selectEndsAtE" placeholder=" Ends at" onkeyup="sortingEmailsE()" min="1" step="1">
+                    <input type="number" id="selectStartsFromE" placeholder=" Starts from" onchange="sortingEmailsE()" onkeypress="sortingEmailsE()" min="1" step="1">
+                    <input type="number" id="selectEndsAtE" placeholder=" Ends at" onchange="sortingEmailsE()" onkeypress="sortingEmailsE()" min="1" step="1">
                     </th>
                     <th id="errorE" scope="col" style="color:green">Everithing is going right.</th>
                   </tr>
@@ -124,7 +124,7 @@
             <table class="table table-hover">
               <thead>
                   <tr>
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form action="{% url 'm_client_marketing' %}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                       <th scope="col">
                         <input type="text" placeholder=" Input category name" id="catagoryName" name="categoryName">
@@ -157,17 +157,69 @@
                         <thead class="table-info">
                           <tr>
                             <th scope="col">
-                              <input type="text" placeholder=" Search.." id="myInputI{{market.id}}" onkeyup="filterFunctionI{{market.id}}()">
+                              <input type="text" placeholder=" Search.." id="myInputI{{market.id}}" onchange="filterFunctionI{{market.id}}()" onkeypress="filterFunctionI{{market.id}}()">
                             </th>
                             <th scope="col">
-                            <input type="number" id="selectStartsFromI{{market.id}}" placeholder=" Starts from" onkeyup="sortingEmailsI{{market.id}}()" min="1" step="1">
-                            <input type="number" id="selectEndsAtI{{market.id}}" placeholder=" Ends at" onkeyup="sortingEmailsI{{market.id}}()" min="1" step="1">
+                            <input type="number" id="selectStartsFromI{{market.id}}" placeholder=" Starts from" onchange="sortingEmailsI{{market.id}}()" onkeypress="sortingEmailsI{{market.id}}()" min="1" step="1">
+                            <input type="number" id="selectEndsAtI{{market.id}}" placeholder=" Ends at" onchange="sortingEmailsI{{market.id}}()" onkeypress="sortingEmailsI{{market.id}}()" min="1" step="1">
                             </th>
                             <th id="errorI{{market.id}}" scope="col" style="color:green">Everithing is going right.</th>
+                            <th id="errorI{{market.id}}" scope="col" style="color:green">                          
+                                <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                  Actions
+                                </a>                                                     
+                            </th>                          
+                          </tr>
+                          <tr>
+                            <div class="collapse" id="collapseExample">
+                              <div class="card card-body">
+                                <div class="row"> 
+                                
+                                  <form action="{% url 'm_client_marketing_more_email' %}" method="POST" enctype="multipart/form-data" class="col">
+                                    {% csrf_token %}                                
+                                    <input type="text" name="categoryName" value="{{market.id}}"hidden>                           
+                                    <input type="file" name="file">                           
+                                    <input type="submit" class="btn btn-warning" value="Add More">                               
+                                  </form>                                      
+                                  <form action="" method="POST" class="col">
+                                    {% csrf_token %}                            
+                                    <input type="submit" class="btn btn-success" value="Edit name">                           
+                                  </form>                                      
+                                  <form action="{% url 'm_client_marketing_delete_category' %}" method="POST" class="col">
+                                    {% csrf_token %}
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter{{market.id}}">
+                                      Delete
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModalCenter{{market.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                      <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle{{market.id}}">Delete Category</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                          <div class="modal-body">
+                                            Are you sure, you want to delete {{market.category_name}}?
+                                            <input type="text" name="categoryName" value="{{market.id}}"hidden>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="submit" class="btn btn-secondary">Yes</button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>                                     
+                                  </form>  
+                                  
+                                </div>
+                              </div>
+                            </div> 
                           </tr>
                         </thead>
-                      </table>                     
-                      
+                      </table>                       
                       <table class="table table-hover">
                         <thead>
                           <tr>
@@ -187,7 +239,7 @@
                           {% endfor %}
                         </tbody>
                        </table>
-                    </div>  
+                    </div>                     
                    {% endfor %} 
                   </div>
                 </div>

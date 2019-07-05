@@ -1338,11 +1338,15 @@ def client_marketing(request):
     enquiry_clients = EnquiryClient.objects.all()
     
     if request.method=="POST":
-        category_name = request.POST['categoryName']
-        file          = request.FILES['file']
-        
+        file=''
+        try:
+            category_name = request.POST['categoryName']
+            file          = request.FILES['file']
+        except:
+            error_message = "to add a new  marketing category. No file given."
+            
         if category_name == '' or file == '':
-            error_message = "to add a new  marketing category"
+            error_message = "to add a new  marketing category. Provide Required Data."
         else:
             form = Marketing(category_name=category_name,
                              file=file,
@@ -1351,7 +1355,7 @@ def client_marketing(request):
             form.save()
             success_message = "added a new marketing category"
             
-            # Adding excle files email in MarketngEmail
+            # Adding .txt files email in MarketngEmail
             file = Marketing.objects.all().last()
             emails = []
             with open(file.file.path, 'r') as f:
@@ -1379,6 +1383,90 @@ def client_marketing(request):
     
     
 @login_required(login_url='login')
+@has_access(allowed_roles=['admin'])
+def client_marketing_more_email(request):
+    """ existing category client's email add """
+    success_message, error_message = None, None
+    clients = Client.objects.all()
+    enquiry_clients = EnquiryClient.objects.all()
+    
+    if request.method=="POST":
+        file=''
+        try:
+            category_name = request.POST['categoryName']
+            file          = request.FILES['file']
+        except:
+            error_message = "to add a new  emails. No file given."
+            
+        if category_name == '' or file == '':
+            error_message = "to add a new  emails. Provide Required Data."
+        else: 
+            
+            # Adding .txt files email in MarketngEmail
+            category = Marketing.objects.get(id=category_name)
+            category.file = file
+            category.save()
+            
+            emails = []
+            with open(category.file.path, 'r') as f:
+                for mail in f:
+                    emails.append(mail[:-1])
+                for mail in emails:
+                    email_add=MarketingEmail(category_name=category,
+                                 created_by = Employee.objects.get(employee_id=request.user.username),
+                                 email=mail
+                                 )
+                    email_add.save()
+            success_message = "added  new emails"
+            
+    context = {
+        'clients'         : clients,
+        'success_message' : success_message,
+        'error_message'   : error_message,
+        'enquiry_clients' : enquiry_clients,
+        'marketing'       : Marketing.objects.all(),
+        'marketing_emails': MarketingEmail.objects.all(),
+        'user_info'       : Employee.objects.get(employee_id=request.user.username),
+        'cart'            : Cart.objects.filter(created_by__employee_id=request.user.username).count,
+    }
+    return render(request, 'manager/marketing.html', context)     
+    
+    
+    
+@login_required(login_url='login')
+@has_access(allowed_roles=['admin'])
+def client_marketing_delete_category(request):
+    """ existing category client's email add """
+    success_message, error_message = None, None
+    clients = Client.objects.all()
+    enquiry_clients = EnquiryClient.objects.all()
+    
+    if request.method=="POST":
+        category_name = request.POST['categoryName']
+            
+        if category_name == '':
+            error_message = "to delete category."
+        else:             
+            # dlete a category
+            category = Marketing.objects.get(id=category_name)
+            category.delete()
+            success_message = "category deleted "
+            
+    context = {
+        'clients'         : clients,
+        'success_message' : success_message,
+        'error_message'   : error_message,
+        'enquiry_clients' : enquiry_clients,
+        'marketing'       : Marketing.objects.all(),
+        'marketing_emails': MarketingEmail.objects.all(),
+        'user_info'       : Employee.objects.get(employee_id=request.user.username),
+        'cart'            : Cart.objects.filter(created_by__employee_id=request.user.username).count,
+    }
+    return render(request, 'manager/marketing.html', context)     
+    
+    
+    
+@login_required(login_url='login')
 @has_access(allowed_roles=['admin'])    
 def payment(request): 
     """ all packages along with payment info and seperate due list """       
@@ -1389,7 +1477,8 @@ def payment(request):
         'user_info': Employee.objects.get(employee_id=request.user.username),
         'cart': Cart.objects.filter(created_by__employee_id=request.user.username).count,
     }
-    return render(request, 'manager/payment.html', context)       
+    return render(request, 'manager/payment.html', context)    
+    
     
 @login_required(login_url='login')
 @has_access(allowed_roles=['admin'])    
