@@ -28,7 +28,8 @@ from .views import ( employee_add, employee_details, employee_delete,
                      package_air_ticket, package_air_ticket_add, package_air_ticket_details, package_air_ticket_delete,
                      package_visa, package_visa_add, package_visa_details, package_visa_delete,
                      expenditure_add, expenditure_details, expenditure_delete, invoice,specific_invoice,
-                     client_marketing_more_email, client_marketing_delete_category, client_marketing_change_category
+                     client_marketing_more_email, client_marketing_delete_category, client_marketing_change_category,
+                     client_marketing_delete_email, client_marketing_change_email
                     )
 urlpatterns = [
     path('', index, name='m_index'),
@@ -39,6 +40,9 @@ urlpatterns = [
     path('marketing/add', client_marketing_more_email, name='m_client_marketing_more_email'),
     path('marketing/delete', client_marketing_delete_category, name='m_client_marketing_delete_category'),
     path('marketing/change', client_marketing_change_category, name='m_client_marketing_change_category'),
+    
+    path('marketing/email/delete', client_marketing_delete_email, name='m_client_marketing_delete_email'),
+    path('marketing/email/change', client_marketing_change_email, name='m_client_marketing_change_email'),
     
     path('requests', request_custom_package, name='m_request_custom_package'),
     path('cart/details', cart_details, name='m_cart_details'),

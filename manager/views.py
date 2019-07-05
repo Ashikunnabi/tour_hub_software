@@ -1498,6 +1498,75 @@ def client_marketing_delete_category(request):
         'cart'            : Cart.objects.filter(created_by__employee_id=request.user.username).count,
     }
     return render(request, 'manager/marketing.html', context)     
+       
+    
+    
+    
+@login_required(login_url='login')
+@has_access(allowed_roles=['admin'])
+def client_marketing_change_email(request):
+    """ existing category client's email add """
+    success_message, error_message = None, None
+    clients = Client.objects.all()
+    enquiry_clients = EnquiryClient.objects.all()
+    
+    if request.method=="POST":
+        new_email = request.POST['newEmail']
+        email = request.POST['email']
+            
+        if new_email == '' or email == '':
+            error_message = "to change email"
+        else:             
+            # edit email
+            mail = MarketingEmail.objects.get(id=email)
+            mail.email = new_email
+            mail.save()
+            success_message = "changed email address"
+            
+    context = {
+        'clients'         : clients,
+        'success_message' : success_message,
+        'error_message'   : error_message,
+        'enquiry_clients' : enquiry_clients,
+        'marketing'       : Marketing.objects.all(),
+        'marketing_emails': MarketingEmail.objects.all(),
+        'user_info'       : Employee.objects.get(employee_id=request.user.username),
+        'cart'            : Cart.objects.filter(created_by__employee_id=request.user.username).count,
+    }
+    return render(request, 'manager/marketing.html', context)        
+    
+    
+    
+@login_required(login_url='login')
+@has_access(allowed_roles=['admin'])
+def client_marketing_delete_email(request):
+    """ existing category client's email add """
+    success_message, error_message = None, None
+    clients = Client.objects.all()
+    enquiry_clients = EnquiryClient.objects.all()
+    
+    if request.method=="POST":
+        email = request.POST['email']
+            
+        if email == '':
+            email = "to delete email."
+        else:             
+            # dlete a category
+            mail = MarketingEmail.objects.get(id=email)
+            mail.delete()
+            success_message = "email address deleted"
+            
+    context = {
+        'clients'         : clients,
+        'success_message' : success_message,
+        'error_message'   : error_message,
+        'enquiry_clients' : enquiry_clients,
+        'marketing'       : Marketing.objects.all(),
+        'marketing_emails': MarketingEmail.objects.all(),
+        'user_info'       : Employee.objects.get(employee_id=request.user.username),
+        'cart'            : Cart.objects.filter(created_by__employee_id=request.user.username).count,
+    }
+    return render(request, 'manager/marketing.html', context)     
     
     
     

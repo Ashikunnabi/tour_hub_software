@@ -11,7 +11,7 @@ from .forms import (  EmployeeForm, ClientForm, EnquiryClientForm, AirTicketForm
 from manager.models import ( Employee, Client, EnquiryClient, AirTicket, AirPort, 
                       Islamic, Tour, Visa, Cart, Order,
                       PackageTour, PackageIslamic, Expenditure,
-                      PackageAirTicket, PackageVisa,
+                      PackageAirTicket, PackageVisa, Marketing, MarketingEmail,
                     )
 
 @login_required(login_url='login')
@@ -1133,14 +1133,242 @@ def package_visa_delete(request,id):
 @login_required(login_url='login')
 @has_access(allowed_roles=['employee'])
 def client_marketing(request):
+    """ client's email and phone number """
+    success_message, error_message = None, None
     clients = Client.objects.all()
+    enquiry_clients = EnquiryClient.objects.all()
     
+    if request.method=="POST":
+        file=''
+        try:
+            category_name = request.POST['categoryName']
+            file          = request.FILES['file']
+        except:
+            error_message = "to add a new  marketing category. No file given."
+            
+        if category_name == '' or file == '':
+            error_message = "to add a new  marketing category. Provide Required Data."
+        else:
+            form = Marketing(category_name=category_name,
+                             file=file,
+                             created_by = Employee.objects.get(employee_id=request.user.username)
+                             )
+            form.save()
+            success_message = "added a new marketing category"
+            
+            # Adding .txt files email in MarketngEmail
+            file = Marketing.objects.all().last()
+            emails = []
+            with open(file.file.path, 'r') as f:
+                for mail in f:
+                    emails.append(mail[:-1])
+                for mail in emails:
+                    email_add=MarketingEmail(category_name=file,
+                                 created_by = Employee.objects.get(employee_id=request.user.username),
+                                 email=mail
+                                 )
+                    email_add.save()
+            
     context = {
-        'clients': clients,
-        'user_info': Employee.objects.get(employee_id=request.user.username),
-        'cart': Cart.objects.filter(created_by__employee_id=request.user.username).count,
+        'clients'         : clients,
+        'success_message' : success_message,
+        'error_message'   : error_message,
+        'enquiry_clients' : enquiry_clients,
+        'marketing'       : Marketing.objects.all(),
+        'marketing_emails': MarketingEmail.objects.all(),
+        'user_info'       : Employee.objects.get(employee_id=request.user.username),
+        'cart'            : Cart.objects.filter(created_by__employee_id=request.user.username).count,
     }
     return render(request, 'employee/marketing.html', context)
+    
+    
+    
+@login_required(login_url='login')
+@has_access(allowed_roles=['employee'])
+def client_marketing_more_email(request):
+    """ existing category client's email add """
+    success_message, error_message = None, None
+    clients = Client.objects.all()
+    enquiry_clients = EnquiryClient.objects.all()
+    
+    if request.method=="POST":
+        file=''
+        try:
+            category_name = request.POST['categoryName']
+            file          = request.FILES['file']
+        except:
+            error_message = "to add a new  emails. No file given."
+            
+        if category_name == '' or file == '':
+            error_message = "to add a new  emails. Provide Required Data."
+        else: 
+            
+            # Adding .txt files email in MarketngEmail
+            category = Marketing.objects.get(id=category_name)
+            category.file = file
+            category.save()
+            
+            emails = []
+            with open(category.file.path, 'r') as f:
+                for mail in f:
+                    emails.append(mail[:-1])
+                for mail in emails:
+                    email_add=MarketingEmail(category_name=category,
+                                 created_by = Employee.objects.get(employee_id=request.user.username),
+                                 email=mail
+                                 )
+                    email_add.save()
+            success_message = "added  new emails"
+            
+    context = {
+        'clients'         : clients,
+        'success_message' : success_message,
+        'error_message'   : error_message,
+        'enquiry_clients' : enquiry_clients,
+        'marketing'       : Marketing.objects.all(),
+        'marketing_emails': MarketingEmail.objects.all(),
+        'user_info'       : Employee.objects.get(employee_id=request.user.username),
+        'cart'            : Cart.objects.filter(created_by__employee_id=request.user.username).count,
+    }
+    return render(request, 'employee/marketing.html', context)     
+    
+    
+    
+@login_required(login_url='login')
+@has_access(allowed_roles=['employee'])
+def client_marketing_change_category(request):
+    """ existing category client's email add """
+    success_message, error_message = None, None
+    clients = Client.objects.all()
+    enquiry_clients = EnquiryClient.objects.all()
+    
+    if request.method=="POST":
+        new_category_name = request.POST['categoryNewName']
+        category_name = request.POST['categoryName']
+            
+        if category_name == '':
+            error_message = "to change category name"
+        else:             
+            # dlete a category
+            category = Marketing.objects.get(id=category_name)
+            category.category_name = new_category_name
+            category.save()
+            success_message = "changed category name"
+            
+    context = {
+        'clients'         : clients,
+        'success_message' : success_message,
+        'error_message'   : error_message,
+        'enquiry_clients' : enquiry_clients,
+        'marketing'       : Marketing.objects.all(),
+        'marketing_emails': MarketingEmail.objects.all(),
+        'user_info'       : Employee.objects.get(employee_id=request.user.username),
+        'cart'            : Cart.objects.filter(created_by__employee_id=request.user.username).count,
+    }
+    return render(request, 'employee/marketing.html', context)        
+    
+    
+    
+@login_required(login_url='login')
+@has_access(allowed_roles=['employee'])
+def client_marketing_delete_category(request):
+    """ existing category client's email add """
+    success_message, error_message = None, None
+    clients = Client.objects.all()
+    enquiry_clients = EnquiryClient.objects.all()
+    
+    if request.method=="POST":
+        category_name = request.POST['categoryName']
+            
+        if category_name == '':
+            error_message = "to delete category."
+        else:             
+            # dlete a category
+            category = Marketing.objects.get(id=category_name)
+            category.delete()
+            success_message = "category deleted "
+            
+    context = {
+        'clients'         : clients,
+        'success_message' : success_message,
+        'error_message'   : error_message,
+        'enquiry_clients' : enquiry_clients,
+        'marketing'       : Marketing.objects.all(),
+        'marketing_emails': MarketingEmail.objects.all(),
+        'user_info'       : Employee.objects.get(employee_id=request.user.username),
+        'cart'            : Cart.objects.filter(created_by__employee_id=request.user.username).count,
+    }
+    return render(request, 'employee/marketing.html', context)     
+       
+    
+    
+    
+@login_required(login_url='login')
+@has_access(allowed_roles=['employee'])
+def client_marketing_change_email(request):
+    """ existing category client's email add """
+    success_message, error_message = None, None
+    clients = Client.objects.all()
+    enquiry_clients = EnquiryClient.objects.all()
+    
+    if request.method=="POST":
+        new_email = request.POST['newEmail']
+        email = request.POST['email']
+            
+        if new_email == '' or email == '':
+            error_message = "to change email"
+        else:             
+            # edit email
+            mail = MarketingEmail.objects.get(id=email)
+            mail.email = new_email
+            mail.save()
+            success_message = "changed email address"
+            
+    context = {
+        'clients'         : clients,
+        'success_message' : success_message,
+        'error_message'   : error_message,
+        'enquiry_clients' : enquiry_clients,
+        'marketing'       : Marketing.objects.all(),
+        'marketing_emails': MarketingEmail.objects.all(),
+        'user_info'       : Employee.objects.get(employee_id=request.user.username),
+        'cart'            : Cart.objects.filter(created_by__employee_id=request.user.username).count,
+    }
+    return render(request, 'employee/marketing.html', context)        
+    
+    
+    
+@login_required(login_url='login')
+@has_access(allowed_roles=['employee'])
+def client_marketing_delete_email(request):
+    """ existing category client's email add """
+    success_message, error_message = None, None
+    clients = Client.objects.all()
+    enquiry_clients = EnquiryClient.objects.all()
+    
+    if request.method=="POST":
+        email = request.POST['email']
+            
+        if email == '':
+            email = "to delete email."
+        else:             
+            # dlete a category
+            mail = MarketingEmail.objects.get(id=email)
+            mail.delete()
+            success_message = "email address deleted"
+            
+    context = {
+        'clients'         : clients,
+        'success_message' : success_message,
+        'error_message'   : error_message,
+        'enquiry_clients' : enquiry_clients,
+        'marketing'       : Marketing.objects.all(),
+        'marketing_emails': MarketingEmail.objects.all(),
+        'user_info'       : Employee.objects.get(employee_id=request.user.username),
+        'cart'            : Cart.objects.filter(created_by__employee_id=request.user.username).count,
+    }
+    return render(request, 'emp/marketing.html', context)     
+    
     
     
 @login_required(login_url='login')
