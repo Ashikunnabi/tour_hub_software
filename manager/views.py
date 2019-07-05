@@ -1435,6 +1435,41 @@ def client_marketing_more_email(request):
     
 @login_required(login_url='login')
 @has_access(allowed_roles=['admin'])
+def client_marketing_change_category(request):
+    """ existing category client's email add """
+    success_message, error_message = None, None
+    clients = Client.objects.all()
+    enquiry_clients = EnquiryClient.objects.all()
+    
+    if request.method=="POST":
+        new_category_name = request.POST['categoryNewName']
+        category_name = request.POST['categoryName']
+            
+        if category_name == '':
+            error_message = "to change category name"
+        else:             
+            # dlete a category
+            category = Marketing.objects.get(id=category_name)
+            category.category_name = new_category_name
+            category.save()
+            success_message = "changed category name"
+            
+    context = {
+        'clients'         : clients,
+        'success_message' : success_message,
+        'error_message'   : error_message,
+        'enquiry_clients' : enquiry_clients,
+        'marketing'       : Marketing.objects.all(),
+        'marketing_emails': MarketingEmail.objects.all(),
+        'user_info'       : Employee.objects.get(employee_id=request.user.username),
+        'cart'            : Cart.objects.filter(created_by__employee_id=request.user.username).count,
+    }
+    return render(request, 'manager/marketing.html', context)        
+    
+    
+    
+@login_required(login_url='login')
+@has_access(allowed_roles=['admin'])
 def client_marketing_delete_category(request):
     """ existing category client's email add """
     success_message, error_message = None, None
