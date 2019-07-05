@@ -38,9 +38,29 @@
       <div class="card-body"> 
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Registered Client Details</a>
-            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Enquiry Client Details</a>
-            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Import(ed) Client Details</a>
+            <a class="nav-item nav-link active" 
+               id="nav-home-tab" 
+               data-toggle="tab" href="#nav-home" 
+               role="tab" aria-controls="nav-home" 
+               aria-selected="true">
+               Registered Client Details
+            </a>
+            <a 
+              class="nav-item nav-link" 
+              id="nav-contact-tab" 
+              data-toggle="tab" href="#nav-contact" 
+              role="tab" aria-controls="nav-contact" 
+              aria-selected="false">
+              Enquiry Client Details
+            </a>
+            <a 
+              class="nav-item nav-link" 
+              id="nav-profile-tab" 
+              data-toggle="tab" href="#nav-profile" 
+              role="tab" aria-controls="nav-profile" 
+              aria-selected="false">
+              Import(ed) Client Details
+            </a>
           </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
@@ -49,13 +69,30 @@
             <thead>
                 <tr>
                   <th scope="col">
-                    <input type="text" placeholder="Search.." id="myInput" onchange="filterFunction()" onkeypress="filterFunction()">
+                    <input type="text" 
+                    placeholder="Search.." 
+                    id="myInput" 
+                    onchange="filterFunction()">
                   </th>
                   <th scope="col">
-                  <input type="number" id="selectStartsFrom" placeholder=" Starts from" onchange="sortingEmails()" onkeypress="sortingEmails()" min="1" step="1">
-                  <input type="number" id="selectEndsAt" placeholder=" Ends at" onchange="sortingEmails()" onkeypress="sortingEmails()" min="1" step="1">
+                  <input type="number" 
+                    id="selectStartsFrom" 
+                    placeholder=" Starts from" 
+                    onchange="sortingEmails()" 
+                    min="1" step="1"
+                  />
+                  <input type="number" 
+                    id="selectEndsAt" 
+                    placeholder=" Ends at" 
+                    onchange="sortingEmails()" 
+                    min="1" step="1"
+                  />
                   </th>
-                  <th id="error" scope="col" style="color:green">Everithing is going right.</th>
+                  <th id="error" 
+                    scope="col" 
+                    style="color:green">
+                    Everithing is going right.
+                  </th>
                 </tr>
               </thead>
           </table>
@@ -87,13 +124,30 @@
               <thead>
                   <tr>
                     <th scope="col">
-                      <input type="text" placeholder="Search.." id="myInputE" onchange="filterFunctionE()" onkeypress="filterFunctionE()">
+                      <input type="text" 
+                        placeholder="Search.." 
+                        id="myInputE" 
+                        onchange="filterFunctionE()">
                     </th>
                     <th scope="col">
-                    <input type="number" id="selectStartsFromE" placeholder=" Starts from" onchange="sortingEmailsE()" onkeypress="sortingEmailsE()" min="1" step="1">
-                    <input type="number" id="selectEndsAtE" placeholder=" Ends at" onchange="sortingEmailsE()" onkeypress="sortingEmailsE()" min="1" step="1">
+                    <input type="number" 
+                      id="selectStartsFromE" 
+                      placeholder=" Starts from" 
+                      onchange="sortingEmailsE()" 
+                      min="1" step="1"
+                    >
+                    <input type="number" 
+                      id="selectEndsAtE" 
+                      placeholder=" Ends at" 
+                      onchange="sortingEmailsE()" 
+                      min="1" step="1"
+                    >
                     </th>
-                    <th id="errorE" scope="col" style="color:green">Everithing is going right.</th>
+                    <th id="errorE" 
+                      scope="col" 
+                      style="color:green">
+                      Everithing is going right.
+                    </th>
                   </tr>
                 </thead>
               </table>
@@ -157,11 +211,11 @@
                         <thead class="table-info">
                           <tr>
                             <th scope="col">
-                              <input type="text" placeholder=" Search.." id="myInputI{{market.id}}" onchange="filterFunctionI{{market.id}}()" onkeypress="filterFunctionI{{market.id}}()">
+                              <input type="text" placeholder=" Search.." id="myInputI{{market.id}}" onchange="filterFunctionI{{market.id}}()" >
                             </th>
                             <th scope="col">
-                            <input type="number" id="selectStartsFromI{{market.id}}" placeholder=" Starts from" onchange="sortingEmailsI{{market.id}}()" onkeypress="sortingEmailsI{{market.id}}()" min="1" step="1">
-                            <input type="number" id="selectEndsAtI{{market.id}}" placeholder=" Ends at" onchange="sortingEmailsI{{market.id}}()" onkeypress="sortingEmailsI{{market.id}}()" min="1" step="1">
+                            <input type="number" id="selectStartsFromI{{market.id}}" placeholder=" Starts from" onchange="sortingEmailsI{{market.id}}()" min="1" step="1">
+                            <input type="number" id="selectEndsAtI{{market.id}}" placeholder=" Ends at" onchange="sortingEmailsI{{market.id}}()" min="1" step="1">
                             </th>
                             <th id="errorI{{market.id}}" scope="col" style="color:green">Everithing is going right.</th>
                             <th id="errorI{{market.id}}" scope="col" style="color:green">                          
@@ -199,7 +253,7 @@
                                             </button>
                                           </div>
                                           <div class="modal-body">
-                                            <input type="text" name="categoryNewName" placeholder=" Write new category name" required>
+                                            <input type="text" name="categoryNewName" placeholder=" Write category name" required>
                                             <input type="text" name="categoryName" value="{{market.id}}"hidden>
                                           </div>
                                           <div class="modal-footer">
@@ -251,18 +305,26 @@
                           <tr>
                             <th scope="col">Sl.</th>
                             <th scope="col">Email</th>
+                            <th scope="col">Action</th>
                           </tr>
                         </thead>
                         <tbody  id="listI{{market.id}}">
+                          <script>var i=0;</script>
                           {% for emails in marketing_emails %}
                             {% if market == emails.category_name %}
                               <tr onclick="copyEmailFunctionI{{market.id}}({{emails.id}})">
-                                <th scope="row">{{ forloop.counter }}</th>
+                                <th scope="row"><script>document.write(i = i+1);</script></th>
                                 <td id="myInputI{{emails.id}}">{{ emails.email }}</td>	               
+                                <td>
+                                  <i class="fas fa-pencil-alt"></i>
+                                  <span class="px-2"></span>
+                                  <i class="far fa-trash-alt"></i>                                
+                                </td>	               
                               </tr>                        
-                            {% else %}
-                            {% endif %}  
+                            {% else %} 
+                            {% endif %} 
                           {% endfor %}
+                            <script>i=0;</script>
                         </tbody>
                        </table>
                     </div>                     
